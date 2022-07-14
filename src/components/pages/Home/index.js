@@ -54,7 +54,7 @@ const Back = styled(Icon)`
 `
 
 const Home = () => {
-  const [selected, updateSelected] = useState('')
+  const [selected, updateSelected] = useState('projets/site-perso')
 
   const handleBack = useCallback(() => {
     updateSelected('')

@@ -26,7 +26,7 @@ const Title = styled.div`
 `
 
 const Visualizer = ({ selected, update, ...props }) => {
-  const [text, updateText] = useState('Sélectionner un fichier dans l\'arborescence')
+  const [text, updateText] = useState('')
   const [loading, updateLoading] = useState(true)
 
   useEffect(() => {
