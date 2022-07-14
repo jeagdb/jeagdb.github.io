@@ -3,27 +3,33 @@ import PropTypes from 'prop-types'
 import { get, keys, map, isEqual, isEmpty, flatten, isArray } from 'lodash'
 import { useCallback, useState } from 'react'
 
-const Center = styled.div`
-  height: 100%;
+import Icon from '../../atoms/Icon'
+
+const Container = styled.div`
+  width: 40%;
   display: flex;
+  gap: 16px;
+  align-self: start;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10%;
-  gap: 16px;
 `
-const Container = styled.div`
+const Block = styled.div`
   margin-left: 24px;
 `
 const Directory = styled.div`
   display: flex;
   gap: 8px;
+  align-items: center;
   font-size: 24px;
   margin-left: 16px;
 `
-const DirectoryIcon = styled.div`
+const DirectoryIcon = styled(Icon)`
   cursor: pointer;
 `
 const File = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
   margin: 4px 0 0 48px;
   font-size: 18px;
   cursor: pointer;
@@ -35,20 +41,20 @@ const Parent = ({ current, currentPath, child, onClick }) => {
     updateOpen(!open)
   }, [open])
 
-  const folderIcon = open ? 'v' : '>'
-
   const folderContent = isArray(current)
     ? generateFiles(current, currentPath, onClick)
     : buildTree(current, currentPath, onClick)
 
   return (
-  <Container>
-    <Directory>
-      {child}
-      <DirectoryIcon onClick={handleClick}>{folderIcon}</DirectoryIcon>
-    </Directory>
-    {open && folderContent}
-    </Container>
+    <Block>
+      <Directory>
+        <DirectoryIcon
+          variant={open ? 'arrowDown' : 'arrowRight'}
+          onClick={handleClick} />
+        {child}
+      </Directory>
+      {open && folderContent}
+    </Block>
   )
 }
 
@@ -61,7 +67,10 @@ Parent.propTypes = {
 
 const generateFiles = (files, path, onClick) =>
   map(files, file => (
-    <File onClick={() => onClick(`${path}${file}`)}>{file}</File>
+    <File onClick={() => onClick(`${path}${file}`)}>
+      <p>☉</p>
+      {file}
+    </File>
   ))
 
 const buildTree = (tree, path, onClick) => {
@@ -91,9 +100,9 @@ const Tree = ({ tree, update }) => {
   }
 
   return (
-    <Center>
+    <Container>
       {buildTree(tree, '', onClick)}
-    </Center>
+    </Container>
   )
 }
 

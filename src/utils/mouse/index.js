@@ -1,6 +1,6 @@
 import { forEach, reduce, range, map, get } from 'lodash'
 
-import { random } from '../../utils'
+import { random } from '..'
 
 export const generateParticules = (p, particules, number) => {
   return [...particules, ...map(range(0, number), () => ({

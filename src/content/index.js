@@ -1,8 +1,8 @@
 const index = {
-  projects: ['tests'],
+  projets: ['tests'],
   notions: {
     front: {
-      react: ['test']
+      react: ['react-query']
     },
     back: ['rabbitMQ']
   }

@@ -1,9 +1,9 @@
 import Sketch from 'react-p5'
 import styled from 'styled-components'
 
-import { animateLink } from '../../../utils/Links'
+import { animateLink } from '../../../utils/links'
 import { isMouseInsideText } from '../../../utils'
-import { applyForce, generateParticules, showParticules, updateParticules } from '../../../utils/Mouse'
+import { applyForce, generateParticules, showParticules, updateParticules } from '../../../utils/mouse'
 
 const Container = styled.div`
   display: flex;

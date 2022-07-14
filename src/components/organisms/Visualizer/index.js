@@ -2,23 +2,37 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 import PropTypes from 'prop-types'
+import { isEmpty } from 'lodash'
 
 import { options } from '../../../config/markdown'
 
-const Center = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const Page = styled.div`
+  position: relative;
   margin-left: 10%;
-  gap: 16px;
+  border: 1px solid #fff;
+  width: 100%;
+  padding: 16px;
+  display: flex;
+`
+const Title = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px solid #fff;
+  border-top: none;
+  border-right: none;
+  padding: 4px 4px 4px;
 `
 
 const Visualizer = ({ selected, update }) => {
-  const [text, updateText] = useState('')
+  const [text, updateText] = useState('Sélectionner un fichier dans l\'arborescence')
 
   useEffect(() => {
-    import('../../../content/projets/test.md')
+    if (isEmpty(selected)) {
+      return
+    }
+
+    import(`../../../content/${selected}.md`)
       .then(res => {
         fetch(res.default)
           .then(res => {
@@ -28,13 +42,15 @@ const Visualizer = ({ selected, update }) => {
           .catch(err => console.log(err))
       })
       .catch(err => console.log(err))
-  })
+  }, [selected])
 
   return (
-    <Center>
-      <h1>hei</h1>
-      <Markdown options={options}>{text}</Markdown>
-    </Center>
+    <Page>
+      <Title>{`${selected}`}</Title>
+      <Markdown options={options}>
+        {text}
+      </Markdown>
+    </Page>
   )
 }
 

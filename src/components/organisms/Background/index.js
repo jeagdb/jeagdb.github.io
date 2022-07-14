@@ -1,7 +1,7 @@
 import Sketch from 'react-p5'
 import styled from 'styled-components'
 
-import { animate, generate } from '../../../utils/Points'
+import { animate, generate } from '../../../utils/points'
 import { WIDTH, HEIGHT, ITERATIONS } from '../../../config/background'
 
 const Animation = styled(Sketch)`
