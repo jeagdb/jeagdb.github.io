@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[777],{9777:function(c,e,p){c.exports=p.p+"static/media/graphQL.31d6cfe0d16ae931b73c.md"}}]);
