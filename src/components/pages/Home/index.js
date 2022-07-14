@@ -54,7 +54,8 @@ const Back = styled(Icon)`
 `
 
 const Home = () => {
-  const [selected, updateSelected] = useState('projets/site-perso')
+  const mobile = isMobile()
+  const [selected, updateSelected] = useState(mobile ? '' : 'projets/site-perso')
 
   const handleBack = useCallback(() => {
     updateSelected('')
@@ -71,7 +72,7 @@ const Home = () => {
         <Content
           update={updateSelected}
           selected={selected} />
-        {isMobile() && !isEmpty(selected) && <Back variant='arrowLeft' onClick={handleBack} />}
+        {mobile && !isEmpty(selected) && <Back variant='arrowLeft' onClick={handleBack} />}
       </Notes>
     </>
   )
