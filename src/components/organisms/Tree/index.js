@@ -1,41 +1,52 @@
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { get, keys, map, isEqual, isEmpty, flatten, isArray } from 'lodash'
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import Icon from '../../atoms/Icon'
+import media from '../../../utils/media'
 
-const Container = styled.div`
-  width: 40%;
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  gap: 16px;
-`
 const Arborescence = styled.div`
+  display: flex;
   padding-right: 16px;
   align-self: start;
   flex-direction: column;
   justify-content: center;
 `
 const Block = styled.div`
-  margin-left: 24px;
+  margin-left: 16px;
+  margin-bottom: 4px;
+  font-size: 18px;
+
+  ${media.greaterThan('l')`
+    font-size: 20px;
+  `} 
 `
 const Directory = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-left: 16px;
-`
-const DirectoryIcon = styled(Icon)`
+  margin-top: 4px;
   cursor: pointer;
-`
-const File = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
-  margin: 4px 0 0 48px;
+
+  ${media.greaterThan('l')`
+    gap: 8px;
+  `} 
+`
+const DirectoryIcon = styled(Icon)`
+  transform: scale(1.2);
+
+  ${media.greaterThan('l')`
+    transform: scale(1.4);
+  `} 
+  
+`
+const File = styled.div`
+  margin: 4px 0 0 16px;
   cursor: pointer;
+  display: flex;
+  gap: 4px;
+  align-items: center;
 `
 const Parent = ({ current, currentPath, child, onClick }) => {
   const [open, updateOpen] = useState(false)
@@ -50,10 +61,8 @@ const Parent = ({ current, currentPath, child, onClick }) => {
 
   return (
     <Block>
-      <Directory>
-        <DirectoryIcon
-          variant={open ? 'arrowDown' : 'arrowRight'}
-          onClick={handleClick} />
+      <Directory onClick={handleClick}>
+        <DirectoryIcon variant={open ? 'arrowDown' : 'arrowRight'} />
         {child}
       </Directory>
       {open && folderContent}
@@ -97,17 +106,17 @@ const buildTree = (tree, path, onClick) => {
   }))
 }
 
-const Tree = ({ tree, update }) => {
+const Tree = ({ tree, update, ...props }) => {
   const onClick = (filename) => {
     update(filename)
   }
 
   return (
-    <Container>
+    <div {...props}>
       <Arborescence>
         {buildTree(tree, '', onClick)}
       </Arborescence>
-    </Container>
+    </div>
   )
 }
 
