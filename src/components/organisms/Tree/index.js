@@ -7,8 +7,13 @@ import Icon from '../../atoms/Icon'
 
 const Container = styled.div`
   width: 40%;
+  height: 100%;
+  overflow: auto;
   display: flex;
   gap: 16px;
+`
+const Arborescence = styled.div`
+  padding-right: 16px;
   align-self: start;
   flex-direction: column;
   justify-content: center;
@@ -20,7 +25,6 @@ const Directory = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 24px;
   margin-left: 16px;
 `
 const DirectoryIcon = styled(Icon)`
@@ -31,7 +35,6 @@ const File = styled.div`
   gap: 4px;
   align-items: center;
   margin: 4px 0 0 48px;
-  font-size: 18px;
   cursor: pointer;
 `
 const Parent = ({ current, currentPath, child, onClick }) => {
@@ -101,7 +104,9 @@ const Tree = ({ tree, update }) => {
 
   return (
     <Container>
-      {buildTree(tree, '', onClick)}
+      <Arborescence>
+        {buildTree(tree, '', onClick)}
+      </Arborescence>
     </Container>
   )
 }

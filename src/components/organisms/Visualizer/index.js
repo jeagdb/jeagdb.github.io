@@ -8,11 +8,11 @@ import { options } from '../../../config/markdown'
 
 const Page = styled.div`
   position: relative;
-  margin-left: 10%;
   border: 1px solid #fff;
   width: 100%;
   padding: 16px;
   display: flex;
+  overflow: auto;
 `
 const Title = styled.div`
   position: absolute;
@@ -45,12 +45,14 @@ const Visualizer = ({ selected, update }) => {
   }, [selected])
 
   return (
+    <>
     <Page>
       <Title>{`${selected}`}</Title>
       <Markdown options={options}>
         {text}
       </Markdown>
     </Page>
+    </>
   )
 }
 

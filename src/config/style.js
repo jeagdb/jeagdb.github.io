@@ -28,6 +28,15 @@ const Style = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     background-image: ${get(theme, 'black', '#fff')};
     color: ${get(theme, 'white', '#fff')};
+
+    *::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      background: white;
+      transition: .5s;
+    }
   }
 `
 
