@@ -71,17 +71,19 @@ const Parent = ({ current, currentPath, child, onClick }) => {
 }
 
 Parent.propTypes = {
-  child: PropTypes.object.isRequired,
+  child: PropTypes.any.isRequired,
   onClick: PropTypes.func.isRequired,
-  current: PropTypes.object.isRequired,
+  current: PropTypes.any.isRequired,
   currentPath: PropTypes.string.isRequired
 }
 
 const generateFiles = (files, path, onClick) =>
-  map(files, file => (
-    <File onClick={() => onClick(`${path}${file}`)}>
-      <p>☉</p>
-      {file}
+  map(files, (file, key) => (
+    <File key={key} onClick={() => onClick(`${path}${file}`)}>
+      <>
+        <p>☉</p>
+        {file}
+      </>
     </File>
   ))
 
@@ -98,6 +100,7 @@ const buildTree = (tree, path, onClick) => {
 
     return (
       <Parent
+        key={currentPath}
         child={child}
         onClick={onClick}
         current={current}

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 import PropTypes from 'prop-types'
-import { isEmpty } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 import media from '../../../utils/media'
+import Loading from '../../atoms/Loading'
 import { options } from '../../../config/markdown'
 
 const Page = styled.div`
@@ -17,6 +18,7 @@ const Title = styled.div`
   border-top: none;
   border-right: none;
   padding: 4px 4px 4px;
+  color: ${({ theme }) => get(theme, 'white', '#fff')};
 
   ${media.greaterThan('l')`
     font-size: 20px;
@@ -25,11 +27,14 @@ const Title = styled.div`
 
 const Visualizer = ({ selected, update, ...props }) => {
   const [text, updateText] = useState('Sélectionner un fichier dans l\'arborescence')
+  const [loading, updateLoading] = useState(true)
 
   useEffect(() => {
     if (isEmpty(selected)) {
       return
     }
+
+    updateLoading(true)
 
     import(`../../../content/${selected}.md`)
       .then(res => {
@@ -38,17 +43,23 @@ const Visualizer = ({ selected, update, ...props }) => {
             return res.text()
           })
           .then(res => updateText(res))
-          .catch(err => console.log(err))
+          .catch(() => updateText(''))
       })
-      .catch(err => console.log(err))
-  }, [selected])
+      .catch(() => {
+        updateText('')
+        update('notFound')
+      })
+
+    updateLoading(false)
+  }, [selected, updateLoading])
 
   return (
     <Page {...props}>
       <Title>{`${selected}`}</Title>
-      <Markdown options={options}>
+      <Loading loading={loading}/>
+      {!loading && <Markdown options={options}>
         {text}
-      </Markdown>
+      </Markdown>}
     </Page>
   )
 }

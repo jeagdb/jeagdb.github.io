@@ -39,7 +39,7 @@ const Content = styled(Visualizer)`
     position: absolute;
     top: 0;
     border: none;
-    padding: 32px 8px 8px 8px;
+    padding: 56px 8px 8px 8px;
     height: 100%;
     color: ${({ theme }) => get(theme, 'grey', '#fff')};
     background: ${({ theme }) => get(theme, 'lightBlue', '#fff')};
