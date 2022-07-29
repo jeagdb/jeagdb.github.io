@@ -1,7 +1,8 @@
-# Picou.fr
+# Picou.fr  
 
-[code source](https://github.com/jeagdb/picou)
+[code source](https://github.com/jeagdb/picou)  
 
-## Idées
+## Idées  
+
 - darkmode
 - version anglaise

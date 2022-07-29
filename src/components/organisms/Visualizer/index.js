@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import Markdown from 'markdown-to-jsx'
 import PropTypes from 'prop-types'
+import Markdown from 'markdown-to-jsx'
 import { get, isEmpty } from 'lodash'
 
 import media from '../../../utils/media'
 import Loading from '../../atoms/Loading'
-import { options } from '../../../config/markdown'
 
 const Page = styled.div`
+  display: flex;
 `
 const Title = styled.div`
   position: absolute;
@@ -53,13 +53,14 @@ const Visualizer = ({ selected, update, ...props }) => {
     updateLoading(false)
   }, [selected, updateLoading])
 
+  console.log('[text]', text.toString())
+
   return (
     <Page {...props}>
       <Title>{`${selected}`}</Title>
-      <Loading loading={loading}/>
-      {!loading && <Markdown options={options}>
-        {text}
-      </Markdown>}
+      <Loading loading={loading} />
+      {!loading && <Markdown>{text}</Markdown>
+      }
     </Page>
   )
 }

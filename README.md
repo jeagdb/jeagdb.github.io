@@ -9,5 +9,5 @@ basic notions about programming in order to easily consult it
 visual projects for fun, to learn and practice
 
 ## TODO HOME
-- ajout de balises md
 - ajouter une navigation
+- finir les fiches md

@@ -8,6 +8,7 @@ const index = {
   },
   backend: {
     common: ['cron', 'crawl', 'scrap'],
+    api: ['rest', 'jsonAPI'],
     node: ['node', 'rollup', 'tldjs', 'jimp'],
     golang: ['golang'],
     rust: ['rust'],
@@ -19,10 +20,19 @@ const index = {
     broker: ['rabbitMQ'],
     tools: ['wasabi']
   },
-  misc: ['design-patterns', 'solid', 'polymorphisme', 'compilation', 'théorie-des-langages'],
+  misc: ['iso', 'design-patterns', 'solid', 'polymorphisme', 'compilation', 'théorie-des-langages'],
   devops: {
-    reseau: ['basics'],
+    reseau: {
+      hardware: ['carte', 'switch'],
+      osi: ['osi', 'ssh', 'http', 'ftp', 'tcp', 'ip', 'tls'],
+      bittorent: ['bittorent', 'tor', 'peer-to-peer'],
+      routage: ['router', 'mac', 'nat', 'adsl']
+    },
     docker: ['basics']
+  },
+  computer: {
+    memory: [],
+    'file-system': []
   }
 }
 

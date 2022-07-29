@@ -2,8 +2,6 @@
 
 ### Définition
 
-Internet =/= web
-
 **Internet** = réseau mondial, constitué lui même de réseaux privés, publiques, universitaires, …, sans centre nevralgique.
 
 Pour accéder à internet, il est nécessaire de disposer d’une connexion, qui s’établit par l’intermédiaire d’un FAI (fournisseur d’accès internet).
@@ -23,19 +21,6 @@ Le web est inventé en 1989 par Tim Berners-Lee, physicien au CERN (conseil euro
 Avant l’arrivée des moteurs de recherche, on naviguait principalement de sites en sites grâce aux liens hypertextes.
 
 Un lien se démarque souvent visuellement du reste du texte, et peut aussi être une image, un bouton… En cliquant dessus, on change de page ou de site. Au fur et à mesure des clics, une « toile » de sites et de pages se tisse, d’où l’appellation Web.
-
-### Différence entre HTTP et TCP/IP
-
-TCP est un protocole de transport et HTTP est au niveau application.
-
-**Dans le détails :**
-
-- TCP fournit la livraison d'un flux d'octets d'un programme d'un ordinateur à un autre. TCP est également chargé de contrôler la taille, le contrôle de flux, le taux d’échange de données et la congestion du trafic réseau..
-- HTTP est une norme de requête / réponse couramment utilisée dans l'informatique client-serveur. Il permet la communication entre un navigateur et un serveur web.
-
-### Différence entre TCP et IP
-
-[](https://waytolearnx.com/2017/12/difference-entre-tcp-et-ip.html)
 
 ## Fonctionnement
 

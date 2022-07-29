@@ -48,6 +48,12 @@ const File = styled.div`
   gap: 4px;
   align-items: center;
 `
+const Inline = styled.div`
+  display: flex;
+  align-items; center;
+  gap: 4px;
+`
+
 const Parent = ({ current, currentPath, child, onClick }) => {
   const [open, updateOpen] = useState(false)
 
@@ -80,10 +86,10 @@ Parent.propTypes = {
 const generateFiles = (files, path, onClick) =>
   map(files, (file, key) => (
     <File key={key} onClick={() => onClick(`${path}${file}`)}>
-      <>
-        <p>☉</p>
+      <Inline>
+        <div>☉</div>
         {file}
-      </>
+      </Inline>
     </File>
   ))
 

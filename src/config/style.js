@@ -1,11 +1,10 @@
-import reset from 'styled-reset'
+// import reset from 'styled-reset'
 import { get } from 'lodash'
 import { createGlobalStyle } from 'styled-components'
 
 import theme from './theme'
 
 const Style = createGlobalStyle`
-  ${reset}
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap');
 
   *, *::before, *::after {
@@ -23,6 +22,7 @@ const Style = createGlobalStyle`
   }
 
   body {
+    margin: 0;
     height: 100%;
     overflow: hidden;
     font-family: 'Roboto', sans-serif;
