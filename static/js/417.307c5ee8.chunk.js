@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[417],{1417:function(e,c,u){e.exports=u.p+"static/media/redux.caa133515ae8b5b1edde.md"}}]);

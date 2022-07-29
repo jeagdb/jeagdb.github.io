@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[666],{9666:function(e,s,p){e.exports=p.p+"static/media/site-perso.5f495a13f04aff52be24.md"}}]);

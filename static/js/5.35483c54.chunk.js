@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[5],{4005:function(c,e,u){c.exports=u.p+"static/media/ruby.31d6cfe0d16ae931b73c.md"}}]);
