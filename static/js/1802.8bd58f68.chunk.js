@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[1802],{1802:function(e,c,u){e.exports=u.p+"static/media/react-query.31d6cfe0d16ae931b73c.md"}}]);

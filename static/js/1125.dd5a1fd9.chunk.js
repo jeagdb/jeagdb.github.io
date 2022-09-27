@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[1125],{1125:function(c,e,s){c.exports=s.p+"static/media/wasabi.31d6cfe0d16ae931b73c.md"}}]);

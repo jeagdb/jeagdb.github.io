@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[900],{900:function(e,c,s){e.exports=s.p+"static/media/postgresQL.31d6cfe0d16ae931b73c.md"}}]);

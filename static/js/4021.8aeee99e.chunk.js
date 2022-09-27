@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[4021],{4021:function(e,c,s){e.exports=s.p+"static/media/webassembly.31d6cfe0d16ae931b73c.md"}}]);

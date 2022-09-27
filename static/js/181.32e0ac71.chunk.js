@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[181],{181:function(c,e,p){c.exports=p.p+"static/media/web.0ac3df6f6ad368d39576.md"}}]);

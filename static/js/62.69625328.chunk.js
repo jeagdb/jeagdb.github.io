@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[62],{62:function(c,e,p){c.exports=p.p+"static/media/tcp.7ba04d4143192ecfb578.md"}}]);
