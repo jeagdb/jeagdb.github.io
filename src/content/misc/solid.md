@@ -6,7 +6,9 @@ En PPO, **SOLID** est un acronyme qui regroupe **cinq principes** de concepti
 
 Les principes sont un sous-ensemble de nombreux principes promus par l'ingénieur logiciel et instructeur américain [Robert C. Martin](https://fr.wikipedia.org/wiki/Robert_C._Martin).
 
-Bien qu'ils s'appliquent à toute conception orientée objet, les principes SOLID peuvent également former une philosophie de base pour des méthodologies telles que le développement agile ou le développement de logiciels adaptatifs.
+Bien qu'ils s'appliquent à toute conception orientée objet,
+les principes SOLID peuvent également former une philosophie de base pour des méthodologies 
+telles que le développement agile ou le développement de logiciels adaptatifs.
 
 ## Responsabilité unique
 

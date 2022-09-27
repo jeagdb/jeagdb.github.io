@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { get, isEmpty } from 'lodash'
-import { useCallback, useState } from 'react'
+import { isEmpty } from 'lodash'
+import { useState } from 'react'
 
-import Icon from '../../atoms/Icon'
 import Tree from '../../organisms/Tree'
 import files from '../../../content'
 import Visualizer from '../../organisms/Visualizer'
@@ -11,19 +10,26 @@ import media, { isMobile } from '../../../utils/media'
 
 const GradientBg = styled(AnimateBackground)`
   height: 100%;
-  padding: 32px;
+  width: 100%;
 `
 const Notes = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  padding: 32px;
+
+  ${media.lessThan('s')`
+    padding: 0;
+  `} 
 `
 const Repository = styled(Tree)`
+  padding: 32px 8px;
   width: 100%;
   overflow: auto;
   display: ${({ selected }) => isEmpty(selected) ? '' : 'none'};
 
   ${media.greaterThan('s')`
+    padding: 0;
     display: block;
     width: 40%;
     height: 100%;
@@ -33,36 +39,19 @@ const Content = styled(Visualizer)`
   position: relative;
   border: 1px solid #fff;
   width: 100%;
-  padding: 16px;
+  padding: 8px;
   display: flex;
   overflow: auto;
 
   ${media.lessThan('s')`
-    display: ${({ selected }) => isEmpty(selected) ? 'none' : ''};
-    position: absolute;
-    top: 0;
     border: none;
-    padding: 56px 8px 8px 8px;
-    height: 100%;
-    color: ${({ theme }) => get(theme, 'grey', '#fff')};
-    background: ${({ theme }) => get(theme, 'lightBlue', '#fff')};
+    display: ${({ selected }) => isEmpty(selected) ? 'none' : ''};
   `} 
-`
-const BackButton = styled(Icon)`
-  z-index: 20;
-  position absolute;
-  top: 12px;
-  left: 12px;
-  transform: scale(2);
 `
 
 const Home = () => {
   const mobile = isMobile()
   const [selected, updateSelected] = useState(mobile ? '' : 'projets/site-perso')
-
-  const handleBack = useCallback(() => {
-    updateSelected('')
-  }, [])
 
   return (
     <GradientBg>
@@ -74,7 +63,6 @@ const Home = () => {
         <Content
           update={updateSelected}
           selected={selected} />
-        {mobile && !isEmpty(selected) && <BackButton variant='arrowLeft' onClick={handleBack} />}
       </Notes>
     </GradientBg>
   )
