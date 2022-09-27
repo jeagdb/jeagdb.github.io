@@ -53,8 +53,6 @@ const Visualizer = ({ selected, update, ...props }) => {
     updateLoading(false)
   }, [selected, updateLoading])
 
-  console.log('[text]', text.toString())
-
   return (
     <Page {...props}>
       <Title>{`${selected}`}</Title>

@@ -2,6 +2,8 @@ import { map, size, range } from 'lodash'
 
 import { BLUR, COLORS, MAX_RADIUS, MIN_RADIUS } from '../../config/background'
 
+// Archive
+
 const randomSign = () => Math.round(Math.random()) * 2 - 1
 
 const randomPosition = (base) => randomSign() * Math.random() * base

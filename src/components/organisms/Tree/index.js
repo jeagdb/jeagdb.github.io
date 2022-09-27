@@ -33,13 +33,13 @@ const Directory = styled.div`
     gap: 8px;
   `} 
 `
+
 const DirectoryIcon = styled(Icon)`
   transform: scale(1.2);
 
   ${media.greaterThan('l')`
     transform: scale(1.4);
-  `} 
-  
+  `}
 `
 const File = styled.div`
   margin: 4px 0 0 16px;
@@ -50,11 +50,17 @@ const File = styled.div`
 `
 const Inline = styled.div`
   display: flex;
-  align-items; center;
+  align-items: center;
   gap: 4px;
 `
+const Round = styled.div`
+  border: ${({ selected }) => selected ? '6px' : '2px'} solid #fff;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+`
 
-const Parent = ({ current, currentPath, child, onClick }) => {
+const Parent = ({ current, currentPath, child, selected, onClick }) => {
   const [open, updateOpen] = useState(false)
 
   const handleClick = useCallback(() => {
@@ -62,8 +68,8 @@ const Parent = ({ current, currentPath, child, onClick }) => {
   }, [open])
 
   const folderContent = isArray(current)
-    ? generateFiles(current, currentPath, onClick)
-    : buildTree(current, currentPath, onClick)
+    ? generateFiles(current, currentPath, selected, onClick)
+    : buildTree(current, currentPath, selected, onClick)
 
   return (
     <Block>
@@ -80,20 +86,21 @@ Parent.propTypes = {
   child: PropTypes.any.isRequired,
   onClick: PropTypes.func.isRequired,
   current: PropTypes.any.isRequired,
+  selected: PropTypes.string.isRequired,
   currentPath: PropTypes.string.isRequired
 }
 
-const generateFiles = (files, path, onClick) =>
+const generateFiles = (files, path, selected, onClick) =>
   map(files, (file, key) => (
     <File key={key} onClick={() => onClick(`${path}${file}`)}>
       <Inline>
-        <div>☉</div>
+        <Round selected={isEqual(selected, `${path}${file}`)} />
         {file}
       </Inline>
     </File>
   ))
 
-const buildTree = (tree, path, onClick) => {
+const buildTree = (tree, path, selected, onClick) => {
   const children = keys(tree)
 
   if (isEmpty(children) || isEqual(children, ['0'])) {
@@ -110,12 +117,13 @@ const buildTree = (tree, path, onClick) => {
         child={child}
         onClick={onClick}
         current={current}
+        selected={selected}
         currentPath={currentPath} />
     )
   }))
 }
 
-const Tree = ({ tree, update, ...props }) => {
+const Tree = ({ tree, selected, update, ...props }) => {
   const onClick = (filename) => {
     update(filename)
   }
@@ -123,7 +131,7 @@ const Tree = ({ tree, update, ...props }) => {
   return (
     <div {...props}>
       <Arborescence>
-        {buildTree(tree, '', onClick)}
+        {buildTree(tree, '', selected, onClick)}
       </Arborescence>
     </div>
   )
@@ -131,7 +139,8 @@ const Tree = ({ tree, update, ...props }) => {
 
 Tree.propTypes = {
   tree: PropTypes.object.isRequired,
-  update: PropTypes.func.isRequired
+  update: PropTypes.func.isRequired,
+  selected: PropTypes.string.isRequired
 }
 
 export default Tree
