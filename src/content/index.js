@@ -2,12 +2,13 @@ const index = {
   projets: ['site-perso'],
   frontend: {
     common: ['web'],
-    react: ['react', 'redux']
+    react: ['react', 'react-native', 'redux']
   },
   misc: ['solid'],
-  devops: {
+  ordinateur: {
+    hardware: ['carte-mere', 'carte-reseau', 'bus', 'carte-extension'],
     reseau: {
-      osi: ['ssh', 'http']
+      osi: ['osi', 'ssh', 'http']
     },
     docker: ['basics']
   }

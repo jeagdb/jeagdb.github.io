@@ -1,4 +1,4 @@
-## Le web c’est quoi ?
+# Le web c’est quoi ?
 
 ### Définition
 

@@ -1,4 +1,4 @@
-## SSH (Secure Shell)
+# SSH (Secure Shell)
 
 Protocole d’administration à distance qui permet aux utilisateurs de contrôler et de modifier leurs serveurs distants via Internet. Le service a été créé pour remplacer de façon sécurisée le Telnet, non chiffré.
 
