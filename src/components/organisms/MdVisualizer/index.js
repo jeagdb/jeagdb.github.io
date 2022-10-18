@@ -56,6 +56,9 @@ const Loader = styled(Loading)`
   align-self: center;
   margin-auto;
 `
+const MdImg = styled.img`
+  width: 100%;
+`
 
 const MdVisualizer = ({ selected, update, ...props }) => {
   const [text, updateText] = useState('')
@@ -68,6 +71,9 @@ const MdVisualizer = ({ selected, update, ...props }) => {
       },
       pre: {
         component: Pre
+      },
+      img: {
+        component: MdImg
       }
     }
   }
