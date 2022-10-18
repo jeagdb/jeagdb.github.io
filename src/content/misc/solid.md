@@ -24,7 +24,7 @@ En gros, l’abstraction est importante. ça permet d’écrire du code qui ne s
 
 ### Exemple
 
-```jsx
+```js
 // getArea ne respecte pas le principe O/F
 public class Rectangle{
  public double Width {get; set;}

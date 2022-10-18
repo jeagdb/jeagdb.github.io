@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 import PropTypes from 'prop-types'
-import { get, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 
+import A from '../../atoms/A'
+import Pre from '../../atoms/Pre'
 import Icon from '../../atoms/Icon'
 import Loading from '../../atoms/Loading'
 import media, { isMobile } from '../../../utils/media'
@@ -54,12 +56,6 @@ const Loader = styled(Loading)`
   align-self: center;
   margin-auto;
 `
-const StyledA = styled.a`
-  color: ${({ theme }) => get(theme, 'white', '#fff')};
-  font-weight: 600;
-  font-style: italic;
-  text-decoration: underline;
-`
 
 const MdVisualizer = ({ selected, update, ...props }) => {
   const [text, updateText] = useState('')
@@ -68,7 +64,10 @@ const MdVisualizer = ({ selected, update, ...props }) => {
   const options = {
     overrides: {
       a: {
-        component: StyledA
+        component: A
+      },
+      pre: {
+        component: Pre
       }
     }
   }
