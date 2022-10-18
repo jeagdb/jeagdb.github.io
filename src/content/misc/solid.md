@@ -53,7 +53,7 @@ public double getArea (object[] shapes){
 
 Correction de cette fonction
 
-```jsx
+```js
 public abstract class shape{
  public abstract double Area();
 }

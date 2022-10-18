@@ -1,4 +1,5 @@
 **React** est une bibliothèque JavaScript pour la construction d’interfaces utilisateur (UI).
+
 ---
 
 ## JSX
@@ -13,7 +14,7 @@ Au lieu de séparer artificiellement les *technologies* en mettant le balisage 
 
 React n’oblige pas à utiliser JSX, mais la plupart des gens y trouvent une aide visuelle quand ils manipulent l’interface utilisateur dans le code JavaScript. Ça permet aussi à React de produire des messages d’erreurs et d’avertissements plus utiles.
 
-```jsx
+```js
 const name = 'monde';
 
 // Il est possible de mettre n'importe quelle expression js dans les accolades
@@ -29,7 +30,7 @@ Après la compilation, les expressions JSX deviennent de simples appels de fonct
 
 Ça signifie que vous pouvez utiliser JSX à l’intérieur d’instructions `if` ou de boucles `for`, l’affecter à des variables, l’accepter en tant qu’argument, et le renvoyer depuis des fonctions :
 
-```jsx
+```js
 function getGreeting(user) {
   if (user) {
     return <h1>Bonjour, {formatName(user)} !</h1>;  
@@ -48,7 +49,7 @@ Il garantit ainsi que vous ne risquez jamais d’injecter quoi que ce soit d’a
 
 ### JSX représente des objets
 
-```jsx
+```js
 const element = (
   <h1 className="greeting">
     Bonjour, monde !
@@ -80,7 +81,7 @@ const element = {
 
 Un élément décrit ce que vous voulez voir à l’écran :
 
-```jsx
+```js
 const element = <h1>Bonjour, monde</h1>;
 ```
 
@@ -88,7 +89,7 @@ Contrairement aux éléments DOM d’un navigateur, les éléments React sont de
 
 Nous parlons de nœud DOM « racine » car tout ce qu’il contient sera géré par React DOM.
 
-```jsx
+```js
 <div id="root"></div>
 ```
 
@@ -96,7 +97,7 @@ Les applications dévéloppées uniquement avec React ont généralement un seul
 
 Pour faire le rendu d’un élément React dans un nœud DOM racine, passez les deux à la méthode `[ReactDOM.render()](https://fr.reactjs.org/docs/react-dom.html#render)` :
 
-```jsx
+```js
 const element = <h1>Bonjour, monde</h1>;
 ReactDOM.render(element, document.getElementById('root'));
 ```
@@ -105,7 +106,7 @@ Les éléments React sont **immuables**.
 
 Une fois votre élément créé, vous ne pouvez plus modifier ses enfants ou ses attributs. Un élément est comme une image d’un film à un instant T : il représente l’interface utilisateur à un point précis dans le temps.
 
-```jsx
+```js
 function tick() {
   const element = (
     <div>
@@ -131,7 +132,7 @@ Les composants permettent de découper l’interface utilisateur en éléments i
 
 Conceptuellement, les composants sont comme des fonctions js. Ils acceptent des entrées quelconques (appelées « props ») et renvoient des éléments React décrivant ce qui doit apparaître à l’écran.
 
-```jsx
+```js
 const Welcome = (props) => {
   return (
 		<h1>Bonjour, {props.name}</h1>
@@ -143,13 +144,13 @@ Cette fonction est un composant React valide car elle accepte un seul argument �
 
 Jusqu’ici, nous n’avons rencontré que des éléments React représentant des balises DOM :
 
-```jsx
+```js
 const element = <div />;
 ```
 
 Mais ces éléments peuvent également représenter des composants définis par l’utilisateur :
 
-```jsx
+```js
 const element = <Welcome name="Sara" />;
 ```
 
@@ -169,7 +170,7 @@ L’état local permet aux composants React de modifier leur sortie au fil du te
 
 La gestion des événements pour les éléments React est très similaire à celle des éléments du DOM.
 
-```jsx
+```js
 const ActionLink = () => {
 // e est un événement synthétique
   const handleClick = (e) => {
@@ -201,7 +202,7 @@ Pour de tels composants, nous vous conseillons d’utiliser la prop spéciale `
 
 exemple:
 
-```jsx
+```js
 function FancyBorder(props) {
   return (
     <div>
@@ -226,7 +227,7 @@ Avec React, on réalise ça avec la composition ; un composant plus « spéciali
 
 Exemple:
 
-```jsx
+```js
 function WelcomeDialog() {
   return (
 		<>
@@ -259,7 +260,7 @@ Fractionner une application peut aider à charger à la demande *(lazy-load)* 
 
 ### Import dynamique
 
-```jsx
+```js
 // AVANT
 import { add } from './math';
 
@@ -277,7 +278,7 @@ Remarque: `React.lazy`et `Suspense` ne sont pas encore disponibles pour le rendu
 
 La fonction React.lazy permet d’afficher un composant importé dynamiquement comme n’importe quel autre composant.
 
-```jsx
+```js
 // AVANT
 import OtherComponent from './OtherComponent'
 // APRES
@@ -290,7 +291,7 @@ React.lazy prend une fonction qui doit appeler un import() dynamique. Ça doi
 
 Le composant importé dynamiquement devrait être exploité dans un composant Suspense, qui nous permet d’afficher un contenu de repli (ex. un indicateur de chargement) en attendant que ce module soit chargé.
 
-```jsx
+```js
 import React, { Suspense } from 'react';
 
 const OtherComponent = React.lazy(() => import('./OtherComponent'));
@@ -314,7 +315,7 @@ Les routes sont un bon endroit pour commencer. La plupart des gens sont habitué
 
 Pour le moment, React.lazy ne prend en charge que les exports par défaut. Si le module que vous souhaitez importer utilise des exports nommés, vous pouvez créer un module intermédiaire qui réexportera le composant voulu en tant qu’export par défaut. Cela garantit que le *tree shaking (***Tree shaking** est un terme couramment utilisé dans un contexte JavaScript pour décrire la suppression du code mort.)
 
-```jsx
+```js
 // ManyComponents.js
 export const MyComponent = /* ... */;
 export const MyUnusedComponent = /* ... */;
@@ -333,7 +334,7 @@ Dans une application React typique, les données sont passées de haut en bas (d
 
 Le Contexte offre un moyen de partager des valeurs comme celles-ci entre des composants sans avoir à explicitement passer une prop à chaque niveau de l’arborescence.
 
-```jsx
+```js
 const MyContext = React.createContext(defaultValue);
 ```
 
@@ -348,7 +349,7 @@ Tous les consommateurs qui sont descendants d’un Provider se rafraîchiront l
 
 Pour s’abonner au context, 2 façons de faire:
 
-```jsx
+```js
 <MyContext.Consumer>
   {value => /* affiche quelque chose basé sur la valeur du contexte */}
 </MyContext.Consumer>
@@ -374,7 +375,7 @@ ref d’un composant à l’un de ses enfants.
 
 exemple:
 
-```jsx
+```js
 function FancyButton(props) {
   return (
     <button className="FancyButton">
@@ -410,7 +411,7 @@ Les HOC ne font pas partie de l’API de React à proprement parler, mais décou
 
 **Un composant d’ordre supérieur est une fonction qui accepte un composant et renvoie un nouveau composant.**
 
-```jsx
+```js
 const Component2 = higherOrderComponent(Component1);
 ```
 
@@ -424,7 +425,7 @@ L’algorithme de comparaison de React (qu’on appelle la réconciliation) util
 
 En général, vous ne devriez pas avoir à y penser. Mais dans le cadre des HOC c’est important, puisque ça signifie que vous ne pouvez pas appliquer un HOC au sein de la méthode de rendu d’un composant :
 
-```jsx
+```js
 render() {
   // Une nouvelle version de EnhancedComponent est créée à chaque rendu
   // EnhancedComponent1 !== EnhancedComponent2
@@ -448,7 +449,7 @@ La solution à ce problème réside dans l’utilisation de l’API `React.forw
 
 Les portails fournissent une excellente solution pour afficher des composants enfants dans un nœud DOM qui existe en dehors de la hiérarchie DOM du composant parent.
 
-```jsx
+```js
 ReactDOM.createPortal(child, container)
 ```
 
@@ -485,7 +486,7 @@ Lors de la destruction d’un arbre, les anciens nœuds DOM sont détruits. Les 
 
 Tous les composants au-dessous de la racine seront également démontés et leur état détruit. Par exemple, en comparant :
 
-```jsx
+```js
 <div>
 	<Counter />
 </div>
@@ -507,7 +508,7 @@ Tous les composants au-dessous de la racine seront également démontés et leur
 
 Lors de la comparaison entre deux éléments DOM React de même type, React examine les attributs des deux, conserve le même nœud DOM sous-jacent, et ne met à jour que les attributs modifiés. Par exemple :
 
-```jsx
+```js
 <div className="before" title="stuff" />
 <div className="after" title="stuff" />
 ```
@@ -516,7 +517,7 @@ En comparant ces deux éléments, React sait qu’il ne faut modifier que le `c
 
 Lors d’une mise à jour du `style`, React là aussi sait ne mettre à jour que les propriétés qui ont changé. Par exemple :
 
-```jsx
+```js
 <div style={{color: 'red', fontWeight: 'bold'}} />
 <div style={{color: 'green', fontWeight: 'bold'}} />
 ```
@@ -545,7 +546,7 @@ Par défaut, lorsqu’il traite les enfants d’un nœud DOM, React parcourt sim
 
 Par exemple, lors de l’ajout d’un élément à la fin des enfants, la conversion entre les deux arbres fonctionne bien :
 
-```jsx
+```js
 <ul>
 	<li>first</li>
 	<li>second</li>
@@ -561,7 +562,7 @@ React fera correspondre les deux arbres `<li>first</li>`, les deux arbres `<li
 
 Si vous l’implémentez de façon naïve, l’insertion d’un élément au début aura de moins bonnes performances. Par exemple, la conversion entre ces deux arbres fonctionnera assez mal :
 
-```jsx
+```js
 <ul>
 	<li>Duke</li>
 	<li>Villanova</li>
@@ -579,7 +580,7 @@ React va modifier chaque enfant plutôt que de réaliser qu’il pouvait garder 
 
 Afin de résoudre ce problème, React prend en charge l’attribut `key`. Quand des enfants ont cette clé, React l’utilise pour faire correspondre les enfants de l’arbre d’origine avec les enfants de l’arbre suivant. Par exemple, l’ajout d’une `key` dans notre exemple inefficace peut rendre la conversion de l’arbre plus efficace :
 
-```jsx
+```js
 <ul>
 	<li key="2015">Duke</li>
 	<li key="2016">Villanova</li>
@@ -595,7 +596,7 @@ Afin de résoudre ce problème, React prend en charge l’attribut `key`. Quand
 
 En pratique, trouver une clé n’est généralement pas difficile. L’élément que vous allez afficher peut déjà disposer d’un identifiant unique, la clé provenant alors de vos données :
 
-```jsx
+```js
 <li key={item.id}>{item.name}</li>
 ```
 

@@ -52,6 +52,7 @@ const Content = styled(Visualizer)`
 const Home = () => {
   const mobile = isMobile()
   const [selected, updateSelected] = useState(mobile ? '' : 'projets/site-perso')
+  console.log('selected ? ', selected)
 
   return (
     <GradientBg>

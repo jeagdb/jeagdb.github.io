@@ -54,7 +54,8 @@ const BackButton = styled(Icon)`
 `
 const Loader = styled(Loading)`
   align-self: center;
-  margin-auto;
+  margin-right: auto;
+  margin-left: auto;
 `
 const MdImg = styled.img`
   width: 100%;
@@ -84,11 +85,11 @@ const MdVisualizer = ({ selected, update, ...props }) => {
   }, [])
 
   useEffect(() => {
-    updateLoading(true)
-
     if (isEmpty(selected)) {
       return
     }
+
+    updateLoading(true)
 
     import(`../../../content/${selected}.md`)
       .then(res => {
@@ -103,8 +104,7 @@ const MdVisualizer = ({ selected, update, ...props }) => {
         updateText('')
         update('notFound')
       })
-
-    updateLoading(false)
+      .finally(() => updateLoading(false))
   }, [selected])
 
   useEffect(() => {
