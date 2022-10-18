@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 import Markdown from 'markdown-to-jsx'
-import { isEmpty } from 'lodash'
+import PropTypes from 'prop-types'
+import { get, isEmpty } from 'lodash'
 
 import Icon from '../../atoms/Icon'
 import Loading from '../../atoms/Loading'
@@ -54,11 +54,25 @@ const Loader = styled(Loading)`
   align-self: center;
   margin-auto;
 `
+const StyledA = styled.a`
+  color: ${({ theme }) => get(theme, 'white', '#fff')};
+  font-weight: 600;
+  font-style: italic;
+  text-decoration: underline;
+`
 
-const Visualizer = ({ selected, update, ...props }) => {
+const MdVisualizer = ({ selected, update, ...props }) => {
   const [text, updateText] = useState('')
   const [loading, updateLoading] = useState(true)
   const mobile = isMobile()
+  const options = {
+    overrides: {
+      a: {
+        component: StyledA
+      }
+    }
+  }
+
   const handleBack = useCallback(() => {
     updateText('')
     update('')
@@ -98,16 +112,16 @@ const Visualizer = ({ selected, update, ...props }) => {
       <Loader loading={loading} />
       {!loading &&
         <Content>
-          <Markdown>{text}</Markdown>
+          <Markdown options={options}>{text}</Markdown>
         </Content>
       }
     </Page>
   )
 }
 
-Visualizer.propTypes = {
+MdVisualizer.propTypes = {
   update: PropTypes.func.isRequired,
   selected: PropTypes.string.isRequired
 }
 
-export default Visualizer
+export default MdVisualizer

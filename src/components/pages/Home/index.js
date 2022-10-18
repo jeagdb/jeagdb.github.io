@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import Tree from '../../organisms/Tree'
 import files from '../../../content'
-import Visualizer from '../../organisms/Visualizer'
+import Visualizer from '../../organisms/MdVisualizer'
 import AnimateBackground from '../../atoms/AnimateBackground'
 import media, { isMobile } from '../../../utils/media'
 

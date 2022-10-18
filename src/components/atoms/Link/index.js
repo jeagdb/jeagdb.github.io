@@ -7,13 +7,11 @@ const ExtLink = styled.a`
   font-size: 24px;
   font-weight: 600;
   color: ${({ theme }) => get(theme, 'white', '#fff')};
-  text-decoration: none;
 `
 const RouterLink = styled(ReactRouterLink)`
   font-size: 24px;
   font-weight: 600;
   color: ${({ theme }) => get(theme, 'white', '#fff')};
-  text-decoration: none;
 `
 
 const Link = ({ link }) => {
