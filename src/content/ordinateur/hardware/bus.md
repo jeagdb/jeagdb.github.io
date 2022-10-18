@@ -23,11 +23,11 @@ On parle de ports PCIe ×1, ×2, ×4, ×8, ×16 et ×32 pour différencier les p
 
 Un port ×16 par exemple peut n’être relié qu’à 8 lignes PCIe ; il devra tout de même avoir un apport de puissance électrique nécessaire aux cartes ×16. Une carte d’extension ×16 fonctionnera sur ce port (mais probablement avec des performances non optimales), car le protocole PCIe prévoit la négociation mutuelle du nombre de lignes maximum supportées par les deux entités en relation. De même, une carte (exemple : ×1) peut être connectée et fonctionnera correctement sur un port plus grand (exemple : ×2, …, ×32).
 
-![pcie-slot.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/28e0b63d-1ddf-4b88-b31c-8fc0257b7baf/pcie-slot.png)
+![pcie-slot.png](/images/hw-pcie-slot.png)
 
 ### Une carte PCIe
 
-![carte pcie.jpg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e263823d-7eb6-49ab-9439-eeca96dd8cf9/carte_pcie.jpg)
+![carte pcie.jpg](/images/hw-carte-pcie.png)
 
 ## Approches parallèle et série
 
@@ -37,4 +37,4 @@ Un bus parallèle transmet simultanément les éléments numériques d'un signal
 
 Le câble de bus série comporte beaucoup moins de conducteurs qu'un bus parallèle, ce qui simplifie le câblage et entrave moins la circulation de l'air dans les appareils informatiques grâce à la réduction de la taille du câble, et à sa souplesse.
 
-![process-bus.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e6337dca-2557-44d4-8f44-6289e029144d/process-bus.png)
+![process-bus.png](/images/hw-process-bus.png)

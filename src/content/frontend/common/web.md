@@ -22,6 +22,8 @@ Avant l’arrivée des moteurs de recherche, on naviguait principalement de site
 
 Un lien se démarque souvent visuellement du reste du texte, et peut aussi être une image, un bouton… En cliquant dessus, on change de page ou de site. Au fur et à mesure des clics, une « toile » de sites et de pages se tisse, d’où l’appellation Web.
 
+---
+
 ## Fonctionnement
 
 ### Acteurs
@@ -50,6 +52,8 @@ L'un des concepts du protocole HTTP inclut l'idée que les fichiers peuvent cont
 2. Le navigateur envoie une requête HTTP au serveur pour lui demander d'envoyer une copie du site web au client (vous allez au magasin et vous passez commande). Ce message, et les autres données envoyées entre le client et le serveur, sont échangés par l'intermédiaire de la connexion internet en utilisant TCP/IP.
 3. si le serveur accepte la requête émise par le client, le serveur envoie un message « 200 OK » au client qui signifie : « Pas de problème, tu peux consulter ce site web, le voici ». Ensuite le serveur commence à envoyer les fichiers du site web au navigateur sous forme d'une série de petits morceaux nommés "paquet”
 4. le navigateur assemble les différents morceaux pour recomposer le site web en entier puis l'affiche sur votre écran
+
+---
 
 ## Les navigateurs
 
@@ -98,4 +102,4 @@ L’**arbre de rendu** contient des rectangles avec des attributs visuels comme 
 1. Après la construction de l’arbre de rendu, le moteur va obtenir les coordonnées exactes où il devra faire apparaitre les éléments à l’écran. Il va être ‘lu’ et chaque noeud sera dessiné en utilisant les couches d’arrière-plan de l’interface utilisateur.
 
 ### Full explications
-[](https://web.developpez.com/tutoriels/web/how-browsers-work/#L3-1)
+[Comment fonctionnent les navigateurs ?](https://web.developpez.com/tutoriels/web/how-browsers-work/#L3-1)

@@ -47,7 +47,7 @@ Un chipset peut parfois contenir un substitut de gpu, carte son, …
 
 La capacité d’évolution d’un pc est lié au chipset qu’il emploie (résolution graphique max, nombre max de couleurs, taille mémoire max, taille du disque dur max, type de barrette de RAM gérée max, vitesse max des bus, …)
 
-![chipset.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/17807b38-844d-4d98-8e87-ff741693e49d/chipset.png)
+![chipset.png](/images/hw-chipset.png)
 
 ## BIOS et UEFI
 
