@@ -35,6 +35,7 @@ const Title = styled.div`
 `
 const Content = styled.div`
   padding: 32px 8px;
+  width: 100%;
 
   ${media.greaterThan('l')`
     padding: 8px 24px;
@@ -42,7 +43,8 @@ const Content = styled.div`
 `
 const BackButton = styled(Icon)`
   z-index: 20;
-  position absolute;
+  position: fixed;
+
   border: 1px solid #659DBD;
   border-radius: 50px;
   padding: 8px;
@@ -58,7 +60,6 @@ const Loader = styled(Loading)`
   margin-left: auto;
 `
 const MdImg = styled.img`
-  width: 100%;
 `
 
 const MdVisualizer = ({ selected, update, ...props }) => {

@@ -7,7 +7,7 @@ import { get, split, last } from 'lodash'
 const Container = styled(SyntaxHighlighter)`
   padding: 16px !important;
   border-radius: 4px;
-  width: 100%;
+  width: 100% !important;
 `
 
 const Pre = ({ children, ...props }) => {
