@@ -60,6 +60,7 @@ const Loader = styled(Loading)`
   margin-left: auto;
 `
 const MdImg = styled.img`
+  max-width: 100%;
 `
 
 const MdVisualizer = ({ selected, update, ...props }) => {
