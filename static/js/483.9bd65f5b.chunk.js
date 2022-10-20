@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[483],{7483:function(c,e,a){c.exports=a.p+"static/media/react-native.9cca5e502b9776abf4f4.md"}}]);
