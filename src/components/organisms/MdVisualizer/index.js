@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 import Markdown from 'markdown-to-jsx'
+import PropTypes from 'prop-types'
 import { isEmpty } from 'lodash'
 
+import A from '../../atoms/A'
+import Pre from '../../atoms/Pre'
 import Icon from '../../atoms/Icon'
 import Loading from '../../atoms/Loading'
 import media, { isMobile } from '../../../utils/media'
@@ -52,24 +54,42 @@ const BackButton = styled(Icon)`
 `
 const Loader = styled(Loading)`
   align-self: center;
-  margin-auto;
+  margin-right: auto;
+  margin-left: auto;
+`
+const MdImg = styled.img`
+  width: 100%;
 `
 
-const Visualizer = ({ selected, update, ...props }) => {
+const MdVisualizer = ({ selected, update, ...props }) => {
   const [text, updateText] = useState('')
   const [loading, updateLoading] = useState(true)
   const mobile = isMobile()
+  const options = {
+    overrides: {
+      a: {
+        component: A
+      },
+      pre: {
+        component: Pre
+      },
+      img: {
+        component: MdImg
+      }
+    }
+  }
+
   const handleBack = useCallback(() => {
     updateText('')
     update('')
   }, [])
 
   useEffect(() => {
-    updateLoading(true)
-
     if (isEmpty(selected)) {
       return
     }
+
+    updateLoading(true)
 
     import(`../../../content/${selected}.md`)
       .then(res => {
@@ -84,8 +104,7 @@ const Visualizer = ({ selected, update, ...props }) => {
         updateText('')
         update('notFound')
       })
-
-    updateLoading(false)
+      .finally(() => updateLoading(false))
   }, [selected])
 
   useEffect(() => {
@@ -98,16 +117,16 @@ const Visualizer = ({ selected, update, ...props }) => {
       <Loader loading={loading} />
       {!loading &&
         <Content>
-          <Markdown>{text}</Markdown>
+          <Markdown options={options}>{text}</Markdown>
         </Content>
       }
     </Page>
   )
 }
 
-Visualizer.propTypes = {
+MdVisualizer.propTypes = {
   update: PropTypes.func.isRequired,
   selected: PropTypes.string.isRequired
 }
 
-export default Visualizer
+export default MdVisualizer

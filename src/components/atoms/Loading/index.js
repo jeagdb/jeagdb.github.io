@@ -45,10 +45,10 @@ const Loader = styled.div`
   }
 `
 
-const Loading = ({ loading }) => {
+const Loading = ({ loading, ...props }) => {
   if (loading) {
     return (
-      <Loader />
+      <Loader {...props} />
     )
   }
 }

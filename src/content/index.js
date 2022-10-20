@@ -1,7 +1,7 @@
 const index = {
   projets: ['site-perso'],
   frontend: {
-    common: ['web'],
+    common: ['web', 'javascript', 'moteur-V8'],
     react: ['react', 'react-native', 'redux']
   },
   misc: ['solid'],

@@ -38,6 +38,10 @@ const Style = createGlobalStyle`
       transition: .5s;
     }
   }
+
+  a {
+    text-decoration: none;
+  }
 `
 
 export default Style
