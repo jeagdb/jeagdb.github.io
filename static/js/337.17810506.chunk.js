@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpicou=self.webpackChunkpicou||[]).push([[337],{8337:function(c,e,p){c.exports=p.p+"static/media/carte-mere.ce32f799d4a4cbf0c04c.md"}}]);
