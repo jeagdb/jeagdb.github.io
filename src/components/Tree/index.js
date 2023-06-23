@@ -20,6 +20,7 @@ const Tree = ({ id, tree }) => {
   const [openFolders, setOpenFolders] = useState([])
 
   const handleFolderClick = useCallback((name) => {
+    console.log('here : ', name)
     setOpenFolders(prevOpenFolders => {
       if (includes(prevOpenFolders, name)) {
         return filter(prevOpenFolders, folder => folder !== name)
@@ -36,7 +37,7 @@ const Tree = ({ id, tree }) => {
           key={elt}
           name={elt}
           selected={selected}
-          isOpen={openFolders.includes(elt)}
+          isOpen={includes(openFolders, elt)}
           handleClick={handleFolderClick}>
           {Object.keys(node).map((childElt) =>
             renderTree(node[childElt], childElt, selected))}
