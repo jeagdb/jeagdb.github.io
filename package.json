@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node src/scripts/generate-content-tree.js && next build",
+    "content": "node src/scripts/generate-content-tree.js",
+    "build": "next build",
+    "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "predeploy": "yarn run build",
+    "predeploy": "yarn run build && yarn run export",
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
@@ -27,6 +29,7 @@
     "styled-components": "^5"
   },
   "devDependencies": {
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^5.0.0"
   }
 }
