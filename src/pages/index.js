@@ -11,7 +11,7 @@ const Home = () => (
       <link rel="icon" href="/images/logo192" />
     </Head>
     <body>
-      <Link href='/projets/picou'>Glossaire</Link>
+      <Link href='/content/projets-picou'>Glossaire</Link>
     </body>
 
   </>
