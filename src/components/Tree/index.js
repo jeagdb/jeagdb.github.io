@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
+import { filter, includes } from 'lodash'
+
+import File from '../File'
+import Folder from '../Folder'
 
 const Arborescence = styled.div`
   display: flex;
@@ -11,82 +14,49 @@ const Arborescence = styled.div`
   min-width: 300px;
   max-height: 500px;
 `
-const Block = styled.div`
-  margin-left: 16px;
-  font-size: 18px;
-`
-const FolderTitle = styled.div`
-  cursor: pointer;
-  font-size: 18px;
-`
-const Round = styled.div`
-  margin-right: 4px;
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  border: 1px solid white;
-  display: inline-block;
-  background-color: ${({ selected }) => selected ? 'white' : 'transparent'};
-`
-const FileTitle = styled.div`
-  margin-left: 16px;
-  font-weight: ${({ selected }) => selected ? 600 : 400};
-`
-
-const Folder = ({ name, selected, children }) => {
-  const [isOpen, setIsOpen] = useState(selected.includes(name))
-
-  const handleClick = () => {
-    setIsOpen(!isOpen)
-  }
-
-  return (
-    <Block>
-      <FolderTitle onClick={handleClick}>{name} {isOpen ? "-" : "+"}</FolderTitle>
-      {isOpen && children}
-    </Block>
-  )
-}
-
-const File = ({ name, path, selected, updateSelected }) => {
-  return (
-    <FileTitle selected={selected === path} onClick={() => updateSelected(path) }>
-      <Round selected={selected === path}/>
-      <Link href={`/content/${path}`}>{name}</Link>
-    </FileTitle>
-  )
-}
-
-const renderTree = (node, elt, selected, updateSelected) => {
-
-  if (typeof node === "object") {
-    return (
-      <Folder
-        key={elt}
-        name={elt}
-        selected={selected}>
-        {Object.keys(node).map((childElt) =>
-          renderTree(node[childElt], childElt, selected, updateSelected))}
-      </Folder>
-    )
-  }
-
-  return (
-    <File
-      key={elt}
-      name={elt}
-      path={node}
-      selected={selected}
-      updateSelected={updateSelected} />
-  )
-}
 
 const Tree = ({ id, tree }) => {
   const [selected, updateSelected] = useState(id)
+  const [openFolders, setOpenFolders] = useState([])
+
+  const handleFolderClick = useCallback((name) => {
+    setOpenFolders(prevOpenFolders => {
+      if (includes(prevOpenFolders, name)) {
+        return filter(prevOpenFolders, folder => folder !== name)
+      } else {
+        return [...prevOpenFolders, name]
+      }
+    })
+  }, [])
+
+  const renderTree = useCallback((node, elt) => {
+    if (typeof node === "object") {
+      return (
+        <Folder
+          key={elt}
+          name={elt}
+          selected={selected}
+          isOpen={openFolders.includes(elt)}
+          handleClick={handleFolderClick}>
+          {Object.keys(node).map((childElt) =>
+            renderTree(node[childElt], childElt, selected))}
+        </Folder>
+      )
+    }
+  
+    return (
+      <File
+        key={elt}
+        name={elt}
+        path={node}
+        selected={selected}
+        updateSelected={updateSelected} />
+    )
+  }, [selected, openFolders, handleFolderClick, updateSelected])
 
   return (
     <Arborescence>
-      {Object.keys(tree).map((elt) => renderTree(tree[elt], elt, selected, updateSelected))}
+      {Object.keys(tree).map((elt) => renderTree(tree[elt], elt))}
     </Arborescence>
   )
 }
