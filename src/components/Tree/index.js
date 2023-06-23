@@ -17,11 +17,12 @@ const Arborescence = styled.div`
 
 const Tree = ({ id, tree }) => {
   const [selected, updateSelected] = useState(id)
-  const [openFolders, setOpenFolders] = useState([])
+  const [openFolders, updateOpenFolders] = useState([])
 
   const handleFolderClick = useCallback((name) => {
+    event.stopPropagation()
     console.log('here : ', name)
-    setOpenFolders(prevOpenFolders => {
+    updateOpenFolders(prevOpenFolders => {
       if (includes(prevOpenFolders, name)) {
         return filter(prevOpenFolders, folder => folder !== name)
       } else {
@@ -44,7 +45,7 @@ const Tree = ({ id, tree }) => {
         </Folder>
       )
     }
-  
+
     return (
       <File
         key={elt}
