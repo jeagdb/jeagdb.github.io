@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import styled from 'styled-components'
 
-const Home = () => (
+import Home from '../components/Home'
+
+const Index = () => (
   <>
     <Head>
       <title>Picou</title>
@@ -10,11 +10,8 @@ const Home = () => (
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="icon" href="/images/logo192" />
     </Head>
-    <body>
-      <Link href='/content/projets-picou'>Glossaire</Link>
-    </body>
-
+    <Home />
   </>
 )
 
-export default Home
+export default Index

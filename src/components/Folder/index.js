@@ -12,7 +12,7 @@ const FolderTitle = styled.div`
 const Folder = ({ name, children, isOpen, handleClick }) => {
   return (
     <Block>
-      <FolderTitle onClick={() => handleClick(name)}>
+      <FolderTitle onClick={(event) => handleClick(event, name)}>
         {name} {isOpen ? "-" : "+"}
       </FolderTitle>
       {isOpen && children}

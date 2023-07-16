@@ -31,7 +31,7 @@ Un port ×16 par exemple peut n’être relié qu’à 8 lignes PCIe ; il devra
 
 ### Une carte PCIe
 
-![carte pcie.jpg](/images/hw-carte-pcie.png)
+![carte pcie.jpg](/images/hw-carte-pcie.jpg)
 
 ## Approches parallèle et série
 

@@ -19,9 +19,7 @@ const Tree = ({ id, tree }) => {
   const [selected, updateSelected] = useState(id)
   const [openFolders, updateOpenFolders] = useState([])
 
-  const handleFolderClick = useCallback((name) => {
-    event.stopPropagation()
-    console.log('here : ', name)
+  const handleFolderClick = useCallback((event, name) => {
     updateOpenFolders(prevOpenFolders => {
       if (includes(prevOpenFolders, name)) {
         return filter(prevOpenFolders, folder => folder !== name)
