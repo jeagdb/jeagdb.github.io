@@ -1,7 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import styled from 'styled-components'
-import { map, isEqual } from 'lodash'
+import { map, isEqual, isUndefined } from 'lodash'
 import { AppBar, Toolbar, Button, Frame, MenuList, MenuListItem, Separator } from 'react95'
 
 import { BOTTOM_BAR_LINKS } from '../../config/links'
@@ -65,18 +66,37 @@ const BottomBar = () => {
           <div>Start</div>
         </StartButton>
         {open &&
-          <Menu>{map(BOTTOM_BAR_LINKS, ({ icon, link, text, divider, width = 32, height = 32 }) => (
-            <>
-              {isEqual(divider, true) && <Separator />}
-              <MenuItem>
-                <Image
-                  src={icon}
-                  alt={text}
-                  width={width}
-                  height={height} />
-                <MenuText>{text}</MenuText>
-              </MenuItem>
-            </>))}
+          <Menu>{map(BOTTOM_BAR_LINKS, ({ icon, link, text, divider, width = 32, height = 32 }) => {
+            if (isUndefined(link)) {
+              return (
+                <>
+                  {isEqual(divider, true) && <Separator />}
+                  <MenuItem>
+                    <Image
+                      src={icon}
+                      alt={text}
+                      width={width}
+                      height={height} />
+                    <MenuText>{text}</MenuText>
+                  </MenuItem>
+                </>)
+            }
+
+            return (
+              <a href={link} target='_blank' rel="noreferrer">
+                {isEqual(divider, true) && <Separator />}
+                <MenuItem>
+                  <Image
+                    src={icon}
+                    alt={text}
+                    width={width}
+                    height={height} />
+                  <MenuText>{text}</MenuText>
+                </MenuItem>
+              </a>
+            )
+
+          })}
           </Menu>}
         <Clock variant='well'>
           {formatTime(now.getHours())}:{formatTime(now.getMinutes())}

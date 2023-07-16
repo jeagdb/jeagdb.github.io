@@ -57,8 +57,7 @@ const Home = () => {
             <Columns key={get(first(col), 'link', '')}>
               {map(col, ({ icon, link, text }) => (
                 <div key={link}>
-                  <Link
-                    href={link}>
+                  <Link href={link}>
                     <Shortcut>
                       <Image
                         src={icon}
