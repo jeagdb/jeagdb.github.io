@@ -14,7 +14,7 @@ Les données sont transmises via internet grâce à un ensemble standardisé de 
 
 L’envoi de données donne naissance à des applications variées, comme le courrier électronique, le web, la messagerie instantanée, le partage de fichier en pair-à-pair, le streaming, …
 
-**Le web constitue donc une application d’internet.**
+**Le web est une application d’internet.**
 
 Le web, version abrégée de **World Wide Web** (Toile mondiale)
 
