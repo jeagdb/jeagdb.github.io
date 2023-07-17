@@ -59,7 +59,7 @@ const Home = () => {
                 <div key={link}>
                   <Link href={link}>
                     <Shortcut>
-                      <Image
+                      <img
                         src={icon}
                         alt={text}
                         width={32}

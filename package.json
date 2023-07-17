@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "predeploy": "yarn run build && yarn run export",
-    "deploy": "gh-pages -d out"
+    "deploy": "gh-pages -d out -t true"
   },
   "dependencies": {
     "@next/font": "13.1.3",

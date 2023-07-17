@@ -58,7 +58,7 @@ const BottomBar = () => {
         <StartButton
           active={open}
           onClick={handleOpen}>
-          <Image
+          <img
             src='/images/windows.png'
             alt='w95 logo'
             width={24}
@@ -72,7 +72,7 @@ const BottomBar = () => {
                 <>
                   {isEqual(divider, true) && <Separator />}
                   <MenuItem>
-                    <Image
+                    <img
                       src={icon}
                       alt={text}
                       width={width}
@@ -86,7 +86,7 @@ const BottomBar = () => {
               <a href={link} target='_blank' rel="noreferrer">
                 {isEqual(divider, true) && <Separator />}
                 <MenuItem>
-                  <Image
+                  <img
                     src={icon}
                     alt={text}
                     width={width}
