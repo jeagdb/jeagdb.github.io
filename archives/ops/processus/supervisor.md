@@ -8,7 +8,7 @@ title: 'Supervisor'
 
 Supervisor est un petit outil codé en Python et permettant d'assurer le suivi et le contrôle de services/processus applicatifs sur des systèmes de type UNIX.
 On peut le comparer à launchd (utilisé par OSX) ou runit. (mettre des liens)
-Attention toutefois il n'est pas destiné à remplacer le process init des systèmes UNIX. (process init c'est quoi ?)
+Attention toutefois il n'est pas destiné à remplacer le process init des systèmes UNIX.
 Il est par contre le parfait allié pour lancer et suivre des services applicatifs liés à un projet et qui doivent être démarrés et disponibles en permanence.
 
 Supervisor est disponible en paquet Debian en version 3.0, l'installation est donc très facile :
