@@ -5,7 +5,7 @@ const Page404 = () => {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace("/content/projets-picou")
+    router.replace("/content/projets-jeagdb")
   })
 
   return null

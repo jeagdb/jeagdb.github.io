@@ -4,6 +4,7 @@ import { filter, includes } from 'lodash'
 
 import File from '../File'
 import Folder from '../Folder'
+import media from '@/services/media'
 
 const Arborescence = styled.div`
   display: flex;
@@ -13,9 +14,13 @@ const Arborescence = styled.div`
   padding: 16px;
   min-width: 300px;
   max-height: 500px;
+
+  ${media.lessThan('m')`
+    display: ${({ visible }) => visible ? 'block' : 'none'};
+  `} 
 `
 
-const Tree = ({ id, tree }) => {
+const Tree = ({ id, tree, back, updateBack }) => {
   const [selected, updateSelected] = useState(id)
   const [openFolders, updateOpenFolders] = useState([])
 
@@ -27,7 +32,12 @@ const Tree = ({ id, tree }) => {
         return [...prevOpenFolders, name]
       }
     })
-  }, [])
+  }, [updateOpenFolders])
+
+  const handleFileClick = useCallback((path) => {
+    updateSelected(path)
+    updateBack(!back)
+  }, [back, updateBack, updateSelected])
 
   const renderTree = useCallback((node, elt) => {
     if (typeof node === "object") {
@@ -50,12 +60,12 @@ const Tree = ({ id, tree }) => {
         name={elt}
         path={node}
         selected={selected}
-        updateSelected={updateSelected} />
+        updateSelected={handleFileClick} />
     )
-  }, [selected, openFolders, handleFolderClick, updateSelected])
+  }, [selected, openFolders, handleFolderClick, handleFileClick])
 
   return (
-    <Arborescence>
+    <Arborescence visible={back}>
       {Object.keys(tree).map((elt) => renderTree(tree[elt], elt))}
     </Arborescence>
   )

@@ -1,7 +1,23 @@
 import styled from 'styled-components'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import media from '../../services/media'
 
 const Page = styled.div`
   display: flex;
+  border: 1px solid #fff;
+  padding: 0px 8px;
+  max-width: 100%;
+  height: 80%;
+
+  ${media.lessThan('m')`
+    border: none;
+    padding: 0px 0px;
+    margin-top: 18px;
+    font-size: 16px;
+    display: ${({ visible }) => visible ? 'block' : 'none'};
+  `} 
 `
 const Title = styled.div`
   position: absolute;
@@ -16,15 +32,33 @@ const Title = styled.div`
 `
 const Content = styled.div`
   padding: 0px 8px;
-  width: 100%;
   max-height: 550px;
   overflow-y: scroll;
 `
+const BackButton = styled(FontAwesomeIcon)`
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  padding: 4px;
+  cursor: pointer;
+  color: white;
+  width: 26px;
 
-const MdVisualizer = ({ html, title, ...props }) => {
+  ${media.greaterThan('m')`
+    display: none;
+  `} 
+`
+
+const MdVisualizer = ({ html, title, back, updateBack }) => {
+  console.log('title ', title)
+
   return (
-    <Page {...props}>
-      <Title>{title}</Title>
+    <Page visible={!back}>
+      <BackButton
+        icon={faArrowLeft}
+        color='white'
+        onClick={() => updateBack(!back)}
+        fontSize={10} />
       <Content>
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </Content>

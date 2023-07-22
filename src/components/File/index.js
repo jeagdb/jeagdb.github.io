@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
+import media from '@/services/media'
+
 const Round = styled.div`
   margin-right: 4px;
   height: 12px;
@@ -13,6 +15,10 @@ const Round = styled.div`
 const FileTitle = styled.div`
   margin-left: 16px;
   font-weight: ${({ selected }) => selected ? 600 : 400};
+  
+  ${media.lessThan('m')`
+    font-size: 22px;
+  `} 
 `
 
 const File = ({ name, path, selected, updateSelected }) => {

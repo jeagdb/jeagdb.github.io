@@ -7,6 +7,7 @@ const GlobalStyles = createGlobalStyle`
 
   #__next {
     height: 100%;
+    width: 100%;
   }
 
   html {
@@ -37,6 +38,10 @@ const GlobalStyles = createGlobalStyle`
     &:hover {
       text-decoration: none;
     }
+  }
+
+  img {
+    max-width: 100%;
   }
 `
 
