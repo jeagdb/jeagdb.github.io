@@ -43,6 +43,19 @@ const GlobalStyles = createGlobalStyle`
   img {
     max-width: 100%;
   }
+
+  pre {
+    background: grey;
+    padding: 2px 4px;
+    border-radius: 10px;
+  }
+
+  code {
+    background: grey;
+    padding: 0px 4px;
+    border-radius: 10px;
+    white-space: pre-wrap;
+  }
 `
 
 export default GlobalStyles

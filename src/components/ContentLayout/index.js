@@ -46,6 +46,7 @@ const ContentLayout = ({ content }) => {
           <MdVisualizer
             back={back}
             html={content.content}
+            title={content.title}
             updateBack={updateBack} />
         </Inline>
       </Page>

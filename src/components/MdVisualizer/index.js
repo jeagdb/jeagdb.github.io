@@ -26,9 +26,13 @@ const Title = styled.div`
   border: 1px solid #fff;
   border-top: none;
   border-right: none;
-  padding: 4px 4px 4px;
+  padding: 2px 16px;
   color: #fff;
   background: #659DBD;
+
+  ${media.greaterThan('m')`
+    font-size: 17px;
+  `} 
 `
 const Content = styled.div`
   padding: 0px 8px;
@@ -50,10 +54,9 @@ const BackButton = styled(FontAwesomeIcon)`
 `
 
 const MdVisualizer = ({ html, title, back, updateBack }) => {
-  console.log('title ', title)
-
   return (
     <Page visible={!back}>
+      <Title>{title}</Title>
       <BackButton
         icon={faArrowLeft}
         color='white'

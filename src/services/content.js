@@ -4,6 +4,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { remark } from 'remark'
 
+
 export const getContentData = async ({ id }) => {
   const rootDirectory = path.join(process.cwd(), 'content')
   const currentPath = `${id.replace(/-/g, '/')}.md`

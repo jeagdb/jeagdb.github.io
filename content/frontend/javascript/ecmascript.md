@@ -23,10 +23,10 @@ Imaginons que tous les navigateurs supportent ES5, mais pas toutes les fonctionn
 On peut utiliser un **transpiler**, pour convertir le code ES6 en code ES5, et donc être compatible avec les navigateurs.
 
 Exemple:
-```
+~~~javascript
 (ES6) const square = (x) => x * x;
 (ES5) var square = function (x) { return x * x; };
-```
+~~~
 
 **Babel** est un exemple populaire de transpileur. Il est largement utilisé dans le développement javascript pour convertir le code js moderne (ES6+) en une version qui est compatible avec les navigateurs plus anciens.
 
