@@ -1,8 +1,7 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import Link from 'next/link'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import styled from 'styled-components'
 import { map, isEqual, isUndefined } from 'lodash'
+import styled, { createGlobalStyle, keyframes } from 'styled-components'
 import { AppBar, Toolbar, Button, Frame, MenuList, MenuListItem, Separator } from 'react95'
 
 import { BOTTOM_BAR_LINKS } from '../../config/links'
@@ -38,71 +37,145 @@ const MenuItem = styled(MenuListItem)`
 const MenuText = styled.div`
   font-size: 14px;
 `
+const ShutdownAnimation = keyframes`
+  0% {
+    opacity: 0;
+    cursor: wait;
+  }
+  100% {
+    opacity: 1;
+    cursor: wait;
+    background: black;
+  }
+`
+const ShutdownOverlay = createGlobalStyle`
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: black;
+    animation: ${ShutdownAnimation} 3s forwards;
+  }
+`
+
+const VideoComponent = styled.video`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 10000;
+  object-fit: cover;
+  object-position: center;
+`
 
 const formatTime = (time) => time < 10 ? `0${time}` : time
 
 const BottomBar = () => {
   const [now, updateNow] = useState(new Date())
   const [open, updateOpen] = useState(false)
+  const [shutdown, updateShutdown] = useState(false)
+  const [bootVideo, updateBootVideo] = useState(false)
+
+  const audioRef = useRef()
 
   const handleOpen = useCallback(() => updateOpen(!open), [open])
 
+  const handleShutDown = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.play()
+      updateShutdown(true)
+
+      setTimeout(() => {
+        updateBootVideo(true)
+      }, 3000)
+    }
+  }, [audioRef, updateShutdown])
+
+  const handleVideoClick = useCallback(() => {
+    updateBootVideo(false)
+    updateShutdown(false)
+  }, [updateBootVideo])
+
   useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3
+    }
+
     const timer = setInterval(() => updateNow(new Date()), 30000)
     return () => clearInterval(timer)
   }, [])
 
+  useEffect(() => {
+    if (bootVideo) {
+      document.body.addEventListener('click', updateBootVideo)
+      return () => document.body.removeEventListener('click', updateBootVideo)
+    }
+  }, [bootVideo, updateBootVideo])
+
   return (
-    <Bar>
-      <BarElements>
-        <StartButton
-          active={open}
-          onClick={handleOpen}>
-          <img
-            src='/images/windows.png'
-            alt='w95 logo'
-            width={24}
-            height={24} />
-          <div>Start</div>
-        </StartButton>
-        {open &&
-          <Menu>{map(BOTTOM_BAR_LINKS, ({ icon, link, text, divider, width = 32, height = 32 }) => {
-            if (isUndefined(link)) {
+    <>
+      {shutdown && <ShutdownOverlay />}
+      {bootVideo && <VideoComponent onClick={handleVideoClick} src="/videos/shutdown.mp4" autoPlay loop />}
+      <Bar>
+        <BarElements>
+          <StartButton
+            active={open}
+            onClick={handleOpen}>
+            <Image
+              src='/images/windows.png'
+              alt='w95 logo'
+              width={24}
+              height={24} />
+            <div>Start</div>
+          </StartButton>
+          {open &&
+            <Menu>{map(BOTTOM_BAR_LINKS, ({ icon, link, text, divider, width = 32, height = 32 }) => {
+              if (isUndefined(link)) {
+                return (
+                  <>
+                    {isEqual(divider, true) && <Separator />}
+                    <MenuItem onClick={handleShutDown}>
+                      <Image
+                        src={icon}
+                        alt={text}
+                        width={width}
+                        height={height} />
+                      <MenuText>{text}</MenuText>
+                      <audio ref={audioRef} src="/mp3/shutdown.mp3" />
+                    </MenuItem>
+                  </>)
+              }
+
               return (
-                <>
+                <a href={link} target='_blank' rel="noreferrer">
                   {isEqual(divider, true) && <Separator />}
                   <MenuItem>
-                    <img
+                    <Image
                       src={icon}
                       alt={text}
                       width={width}
                       height={height} />
                     <MenuText>{text}</MenuText>
                   </MenuItem>
-                </>)
-            }
+                </a>
+              )
 
-            return (
-              <a href={link} target='_blank' rel="noreferrer">
-                {isEqual(divider, true) && <Separator />}
-                <MenuItem>
-                  <img
-                    src={icon}
-                    alt={text}
-                    width={width}
-                    height={height} />
-                  <MenuText>{text}</MenuText>
-                </MenuItem>
-              </a>
-            )
-
-          })}
-          </Menu>}
-        <Clock variant='well'>
-          {formatTime(now.getHours())}:{formatTime(now.getMinutes())}
-        </Clock>
-      </BarElements>
-    </Bar>
+            })}
+            </Menu>}
+          <Clock variant='well'>
+            {formatTime(now.getHours())}:{formatTime(now.getMinutes())}
+          </Clock>
+        </BarElements>
+      </Bar>
+    </>
   )
 }
 
