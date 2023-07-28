@@ -4,6 +4,7 @@ import { map, isEqual, isUndefined } from 'lodash'
 import styled, { createGlobalStyle, keyframes } from 'styled-components'
 import { AppBar, Toolbar, Button, Frame, MenuList, MenuListItem, Separator } from 'react95'
 
+import media from '@/services/media'
 import { BOTTOM_BAR_LINKS } from '../../config/links'
 
 const StartButton = styled(Button)`
@@ -48,6 +49,10 @@ const ShutdownAnimation = keyframes`
     background: black;
   }
 `
+const fadeInOut = keyframes`
+  0%,100% { opacity: 0; }
+  50% { opacity: 1; }
+`
 const ShutdownOverlay = createGlobalStyle`
   body::after {
     content: '';
@@ -61,22 +66,45 @@ const ShutdownOverlay = createGlobalStyle`
     animation: ${ShutdownAnimation} 3s forwards;
   }
 `
-
+const VideoContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  height: 40%;
+`
 const VideoComponent = styled.video`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   z-index: 10000;
   object-fit: cover;
-  object-position: center;
+`
+const VideoText = styled.p`
+  z-index: 10001;
+  color: white;
+  font-size: 54px;
+  position: absolute;
+  animation: ${fadeInOut} 2s infinite;
+  bottom: 10%;
+  text-align: center;
+  text-shadow: 3px 2px darkblue;
+
+  ${media.lessThan('m')`
+    font-size: 42px;
+  `} 
 `
 
 const formatTime = (time) => time < 10 ? `0${time}` : time
+
+const getVideoName = (date) => {
+  const isHalloween = date.getMonth() === 9 && date.getDate() === 31
+  return isHalloween ? 'creepycomputer' : 'computer1'
+}
 
 const BottomBar = () => {
   const [now, updateNow] = useState(new Date())
@@ -123,7 +151,10 @@ const BottomBar = () => {
   return (
     <>
       {shutdown && <ShutdownOverlay />}
-      {bootVideo && <VideoComponent onClick={handleVideoClick} src="/videos/shutdown.mp4" autoPlay loop />}
+      {bootVideo && <VideoContainer>
+        <VideoComponent onClick={handleVideoClick} src={`/videos/${getVideoName(now)}.mp4`} autoPlay loop muted />
+        <VideoText>Press anywere !</VideoText>
+      </VideoContainer>}
       <Bar>
         <BarElements>
           <StartButton
@@ -167,7 +198,6 @@ const BottomBar = () => {
                   </MenuItem>
                 </a>
               )
-
             })}
             </Menu>}
           <Clock variant='well'>
