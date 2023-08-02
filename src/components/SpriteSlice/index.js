@@ -1,30 +1,72 @@
 import styled from 'styled-components'
-import { get, isEqual } from 'lodash'
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { get, size, isEqual, isUndefined } from 'lodash'
 import { useState, useCallback, useRef, useEffect } from 'react'
 
-const Box = styled.div`
-  padding: 8px;;
-  margin: 24px;
+const Container = styled.div`
+  width: 100%;
+`
+const FileWrapper = styled.div`
   border: 1px solid white;
+  padding: 8px;
   border-radius: 5px;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+
+  color: ${({ selected }) => selected ? 'grey' : 'white'};
+  background-color: ${({ selected }) => selected ? 'white' : 'transparent'};
 `
-const SpriteSlices = styled(Box)`
-`
-const Title = styled.h2`
-  font-size: 24px;
-  padding: 0 16px;
+const FileButton = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `
 const InputFile = styled.input`
-  padding: 0 8px;
-  border-radius: 5px;
 `
 const Canvas = styled.canvas`
   object-fit: contain;
 `
+const Settings = styled.div`
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+`
+const SpriteSettings = styled.div`
+  display: flex;
+  gap: 8px;
+`
 const Inline = styled.div`
   display: flex;
-  gap: 4px;
+  gap: 8px;
   align-items: center;
+`
+const Count = styled.div`
+  min-width: 50px;
+`
+const Slider = styled.input`
+  min-width: 200px;
+  width: 200px;
+`
+const Button = styled.div`
+  padding: 2px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  border: 1px solid white;
+  border-radius: 20px;
+  cursor: pointer;
+`
+const Block = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+const CanvasWrapper = styled.div`
+  width: fit-content;
+  max-width: 70%;
+  height: 80%;
+  overflow: auto;
 `
 
 const SpriteSlice = ({ sprites, updateSprites }) => {
@@ -36,12 +78,23 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
 
   const canvasRef = useRef()
   const contextRef = useRef()
+  const hiddenFileInput = useRef(null)
 
   const handleFileChange = useCallback((e) => {
     if (e.target.files) {
       updateFile(URL.createObjectURL(e.target.files[0]))
     }
   }, [updateFile])
+
+  const handleFileClick = useCallback(() => {
+    hiddenFileInput.current.click()
+  }, [])
+
+  const handleWidthChange = useCallback((e) =>
+    setWidth(parseInt(get(e, 'target.value', width))), [width, setWidth])
+
+  const handleHeightChange = useCallback((e) =>
+    setHeight(parseInt(get(e, 'target.value', height))), [height, setHeight])
 
   const handleSizeChange = useCallback((func, val, op) =>
     isEqual(op, '+') ? func(val + 1) : func(val - 1), [])
@@ -80,19 +133,15 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
       const context = canvas.getContext('2d')
       contextRef.current = context
 
-      // Création de la nouvelle image
       let img = new Image()
       img.src = file
 
       img.onload = () => {
-        // Redimensionnement du canvas pour correspondre à l'image
         canvas.width = img.width
         canvas.height = img.height
 
-        // Dessiner l'image sur le canvas
         context.drawImage(img, 0, 0, img.width, img.height)
 
-        // Dessiner la grille sur l'image
         context.strokeStyle = 'red'
         for (let i = 0; i < img.width; i += width) {
           for (let j = 0; j < img.height; j += height) {
@@ -100,7 +149,6 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
           }
         }
 
-        // Dessiner la sélection sur l'image
         drawSelection()
       }
     }
@@ -117,27 +165,49 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
   }, [updateSprites, selectedSprites, width, height, file])
 
   return (
-    <SpriteSlices>
-      <Title>Sprite slices</Title>
-      <InputFile
-        type="file"
-        onChange={handleFileChange} />
-      <Inline>
-        <Inline>
-          <div>x : {width}</div>
-          <button onClick={() => handleSizeChange(setWidth, width, '+')}>+</button>
-          <button onClick={() => handleSizeChange(setWidth, width, '-')}>-</button>
-        </Inline>
-        <Inline>
-          <div>y : {height}</div>
-          <button onClick={() => handleSizeChange(setHeight, height, '+')}>+</button>
-          <button onClick={() => handleSizeChange(setHeight, height, '-')}>-</button>
-        </Inline>
-        <button onClick={() => updateSelected(true)}>selectionner une série de sprites</button>
-        {selected && <div>MODE selection</div>}
-      </Inline>
-      <Canvas ref={canvasRef} onClick={handleCanvasClick} />
-    </SpriteSlices>
+    <Container>
+      <Settings>
+        <FileWrapper onClick={handleFileClick}>
+          <InputFile
+            ref={hiddenFileInput}
+            type="file"
+            style={{ display: 'none' }}
+            onChange={handleFileChange} />
+          <FileButton>
+            <span>Choisir une spritesheet</span>
+            <FontAwesomeIcon icon={faPlus} size='sm' />
+          </FileButton>
+        </FileWrapper>
+        {!isUndefined(file) && <SpriteSettings>
+          <Block>
+            <Inline>
+              <Count>x : {width}</Count>
+              <Slider type="range" min="1" max="200" value={width} onChange={handleWidthChange} />
+              <Button width={20} height={20} onClick={() => handleSizeChange(setWidth, width, '+')}>
+                <FontAwesomeIcon icon={faPlus} />
+              </Button>
+              <Button width={20} height={20} onClick={() => handleSizeChange(setWidth, width, '-')}>
+                <FontAwesomeIcon icon={faMinus} />
+              </Button>
+            </Inline>
+            <Inline>
+              <Count>y : {height}</Count>
+              <Slider type="range" min="1" max="200" value={height} onChange={handleHeightChange} />
+              <Button width={20} height={20} onClick={() => handleSizeChange(setHeight, height, '+')}>
+                <FontAwesomeIcon icon={faPlus} />
+              </Button>
+              <Button width={20} height={20} onClick={() => handleSizeChange(setHeight, height, '-')}>
+                <FontAwesomeIcon icon={faMinus} />
+              </Button>
+            </Inline>
+          </Block>
+          <FileWrapper selected={selected} onClick={() => updateSelected(!selected)}>selectionner une série de sprites {selected ? `(${size(selectedSprites)})` : ''}</FileWrapper>
+        </SpriteSettings>}
+      </Settings>
+      <CanvasWrapper>
+        <Canvas ref={canvasRef} onClick={handleCanvasClick} />
+      </CanvasWrapper>
+    </Container>
   )
 }
 

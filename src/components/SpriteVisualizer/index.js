@@ -47,7 +47,7 @@ const SpriteVisualizer = ({ sprites: infos }) => {
     if (isPlaying && sprites.length > 0) {
       interval = setInterval(() => {
         setCurrentIndex(prevIndex => (prevIndex + 1) % sprites.length)
-      }, 500)
+      }, 150)
     }
 
     return () => {
@@ -88,7 +88,7 @@ const SpriteVisualizer = ({ sprites: infos }) => {
       <button onClick={handlePlayPauseClick}>
         {isPlaying ? "Pause" : "Play"}
       </button>
-      <div>
+     {!isEmpty(sprites) && <div>
         <canvas
           width={width}
           height={height}
@@ -109,7 +109,7 @@ const SpriteVisualizer = ({ sprites: infos }) => {
             }
           }}
         />
-      </div>
+      </div>}
     </div >
   )
 }
