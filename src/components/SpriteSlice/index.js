@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { get, size, isEqual, isUndefined } from 'lodash'
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { get, size, isEqual, isUndefined, some, filter, isEmpty } from 'lodash'
 
 const Container = styled.div`
   width: 100%;
@@ -108,12 +108,21 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
       const spriteX = Math.floor(x / width)
       const spriteY = Math.floor(y / height)
 
-      updateSelectedSprites((sprites) => [...sprites, { spriteX, spriteY }])
+      const newSprite = { spriteX, spriteY }
+      const isPresent = some(selectedSprites,
+        sprite => isEqual(sprite.spriteX, spriteX) && isEqual(sprite.spriteY, spriteY)
+      )
+
+      updateSelectedSprites((currSprites) => {
+        return isPresent ?
+          filter(currSprites, sprite => !isEqual(sprite.spriteX, spriteX) || !isEqual(sprite.spriteY,spriteY))
+          : [...currSprites, newSprite]
+      })
     }
-  }, [selected, width, height, updateSelectedSprites])
+  }, [selected, selectedSprites, width, height, updateSelectedSprites])
 
   const drawSelection = useCallback(() => {
-    if (selected && contextRef.current) {
+    if (selected && contextRef.current && !isEmpty(selectedSprites)) {
       const context = contextRef.current
       context.lineWidth = 2
       context.strokeStyle = 'blue'

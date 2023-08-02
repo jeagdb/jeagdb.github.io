@@ -20,6 +20,7 @@ const Button = styled.div`
   border: 1px solid white;
   border-radius: 5px;
   padding: 4px;
+  cursor: pointer;
 `
 const Visualizer = styled.div`
   display: flex;
@@ -48,6 +49,10 @@ const SettingsButton = styled.div`
   border: 1px solid white;
   border-radius: 20px;
   cursor: pointer;
+`
+const CanvasWrapper = styled.div`
+  height: 80%;
+  overflow: auto;
 `
 
 const SpriteVisualizer = ({ sprites: infos }) => {
@@ -132,27 +137,28 @@ const SpriteVisualizer = ({ sprites: infos }) => {
             </SettingsButton>
           </Inline>
         </Settings>
-        <canvas
-          width={width}
-          height={height}
-          ref={canvasRef => {
-            if (canvasRef != null) {
-              const ctx = canvasRef.getContext('2d')
-              const img = new Image()
-              img.onload = () => {
-                ctx.drawImage(
-                  img,
-                  sprites[currentIndex].spriteX * width, sprites[currentIndex].spriteY * height,
-                  width, height,
-                  0, 0,
-                  width, height
-                )
+        <CanvasWrapper>
+          <canvas
+            width={width}
+            height={height}
+            ref={canvasRef => {
+              if (canvasRef != null) {
+                const ctx = canvasRef.getContext('2d')
+                const img = new Image()
+                img.onload = () => {
+                  ctx.drawImage(
+                    img,
+                    sprites[currentIndex].spriteX * width, sprites[currentIndex].spriteY * height,
+                    width, height,
+                    0, 0,
+                    width, height
+                  )
+                }
+                img.src = file
               }
-              img.src = file
-            }
-          }}
-        />
-
+            }}
+          />
+        </CanvasWrapper>
       </Visualizer>
     </Container >
   )
