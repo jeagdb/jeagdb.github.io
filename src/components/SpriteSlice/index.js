@@ -63,7 +63,6 @@ const Block = styled.div`
   gap: 8px;
 `
 const CanvasWrapper = styled.div`
-  width: fit-content;
   max-width: 70%;
   height: 80%;
   overflow: auto;
@@ -81,7 +80,7 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
   const hiddenFileInput = useRef(null)
 
   const handleFileChange = useCallback((e) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
       updateFile(URL.createObjectURL(e.target.files[0]))
     }
   }, [updateFile])

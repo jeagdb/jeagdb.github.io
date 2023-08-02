@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { isEqual } from 'lodash'
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
+import { get, isEmpty } from 'lodash'
 
 import SpriteSlice from '../components/SpriteSlice'
 import GlobalStyles from '../components/GlobalStyles'
@@ -24,8 +24,9 @@ const Game = () => {
         <SpriteSlice
           sprites={sprites}
           updateSprites={updateSprites} />
-        <SpriteVisualizer
-          sprites={sprites} />
+        {!isEmpty(get(sprites, 'selectedSprites', [])) &&
+          <SpriteVisualizer
+            sprites={sprites} />}
       </Container>
     </>
   )

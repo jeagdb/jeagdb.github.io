@@ -1,35 +1,58 @@
 import styled from 'styled-components'
-import { get, map, isEmpty } from 'lodash'
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { get, map, isEqual } from 'lodash'
+import { useState, useEffect, useCallback } from 'react'
 
-const Box = styled.div`
-  padding: 8px;;
-  margin: 24px;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px; 
+`
+const Tiles = styled.div`
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+`
+const Button = styled.div`
+  width: fit-content;
   border: 1px solid white;
   border-radius: 5px;
+  padding: 4px;
 `
-const SpriteSlices = styled(Box)`
-  width: 100%;
+const Visualizer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `
-const Title = styled.h2`
-  font-size: 24px;
-  padding: 0 16px;
-`
-const InputFile = styled.input`
-  padding: 0 8px;
-  border-radius: 5px;
-`
-const Canvas = styled.canvas`
-  width: 100%;
+const Settings = styled.div`
+  display: flex;
 `
 const Inline = styled.div`
   display: flex;
-  gap: 4px;
+  gap: 8px;
   align-items: center;
+`
+const Count = styled.div`
+  min-width: 50px;
+`
+const Slider = styled.input`
+  min-width: 200px;
+  width: 200px;
+`
+const SettingsButton = styled.div`
+  padding: 2px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  border: 1px solid white;
+  border-radius: 20px;
+  cursor: pointer;
 `
 
 const SpriteVisualizer = ({ sprites: infos }) => {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, updateIsPlaying] = useState(false)
+  const [speed, updateSpeed] = useState(150)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const file = get(infos, 'file')
@@ -38,8 +61,14 @@ const SpriteVisualizer = ({ sprites: infos }) => {
   const sprites = get(infos, 'selectedSprites', [])
 
   const handlePlayPauseClick = () => {
-    setIsPlaying(!isPlaying)
+    updateIsPlaying(!isPlaying)
   }
+
+  const handleSpeedChange = useCallback((e) =>
+    updateSpeed(parseInt(get(e, 'target.value', speed))), [speed, updateSpeed])
+
+  const handleClickSpeedChange = useCallback((func, val, op) =>
+    isEqual(op, '+') ? func(val + 1) : func(val - 1), [])
 
   useEffect(() => {
     let interval
@@ -47,7 +76,7 @@ const SpriteVisualizer = ({ sprites: infos }) => {
     if (isPlaying && sprites.length > 0) {
       interval = setInterval(() => {
         setCurrentIndex(prevIndex => (prevIndex + 1) % sprites.length)
-      }, 150)
+      }, speed)
     }
 
     return () => {
@@ -55,40 +84,54 @@ const SpriteVisualizer = ({ sprites: infos }) => {
         clearInterval(interval)
       }
     }
-  }, [isPlaying, sprites])
+  }, [speed, isPlaying, sprites])
 
 
   return (
-    <div>
-      {!isEmpty(sprites) && map(sprites, (sprite, index) => {
-        return (
-          <canvas
-            key={index}
-            width={width}
-            height={height}
-            ref={canvasRef => {
-              if (canvasRef != null) {
-                const ctx = canvasRef.getContext('2d')
-                const img = new Image()
-                img.onload = () => {
-                  ctx.drawImage(
-                    img,
-                    sprite.spriteX * width, sprite.spriteY * height,
-                    width, height,
-                    0, 0,
-                    width, height
-                  )
+    <Container>
+      <Tiles>
+        {map(sprites, (sprite, index) => {
+          return (
+            <canvas
+              key={index}
+              width={width}
+              height={height}
+              ref={canvasRef => {
+                if (canvasRef != null) {
+                  const ctx = canvasRef.getContext('2d')
+                  const img = new Image()
+                  img.onload = () => {
+                    ctx.drawImage(
+                      img,
+                      sprite.spriteX * width, sprite.spriteY * height,
+                      width, height,
+                      0, 0,
+                      width, height
+                    )
+                  }
+                  img.src = file
                 }
-                img.src = file
-              }
-            }}
-          />
-        )
-      })}
-      <button onClick={handlePlayPauseClick}>
+              }}
+            />
+          )
+        })}
+      </Tiles>
+      <Button onClick={handlePlayPauseClick}>
         {isPlaying ? "Pause" : "Play"}
-      </button>
-     {!isEmpty(sprites) && <div>
+      </Button>
+      <Visualizer>
+        <Settings>
+          <Inline>
+            <Count>x : {speed}</Count>
+            <Slider type="range" min="50" max="300" value={speed} onChange={handleSpeedChange} />
+            <SettingsButton width={20} height={20} onClick={() => handleClickSpeedChange(updateSpeed, speed, '+')}>
+              <FontAwesomeIcon icon={faPlus} />
+            </SettingsButton>
+            <SettingsButton width={20} height={20} onClick={() => handleClickSpeedChange(updateSpeed, speed, '-')}>
+              <FontAwesomeIcon icon={faMinus} />
+            </SettingsButton>
+          </Inline>
+        </Settings>
         <canvas
           width={width}
           height={height}
@@ -109,8 +152,9 @@ const SpriteVisualizer = ({ sprites: infos }) => {
             }
           }}
         />
-      </div>}
-    </div >
+
+      </Visualizer>
+    </Container >
   )
 }
 
