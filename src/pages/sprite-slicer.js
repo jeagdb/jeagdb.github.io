@@ -14,7 +14,7 @@ const Container = styled.div`
   padding: 24px;
 `
 
-const Game = () => {
+const SpriteSlicer = () => {
   const [sprites, updateSprites] = useState({})
 
   return (
@@ -32,4 +32,4 @@ const Game = () => {
   )
 }
 
-export default Game
+export default SpriteSlicer

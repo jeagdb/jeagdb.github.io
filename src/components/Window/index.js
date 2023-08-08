@@ -1,12 +1,21 @@
 import styled from 'styled-components'
-import { random } from 'lodash'
 import { Button, Window, WindowContent, WindowHeader } from 'react95'
+
+import media from '@/services/media'
 
 const StyledWindow = styled(Window)`
   position: absolute;
   top: ${({ top }) => top}%;
   left: ${({ left }) => left}%;
   min-width: 300px;
+
+  ${media.lessThan('m')`
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 94%;
+    overflow-y: auto;
+  `}
 `
 
 const StyledWindowHeader = styled(WindowHeader)`

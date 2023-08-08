@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import styled from 'styled-components'
-import { get, map } from 'lodash'
+import { map } from 'lodash'
 import { Button, Frame, Separator, Avatar } from 'react95'
+
+import media from '@/services/media'
 
 const PROJECTS = [{
   date: '2022-2023',
@@ -14,7 +16,7 @@ const PROJECTS = [{
 }, {
   date: '2023',
   tags: ['javascript', 'next'],
-  link: '/game',
+  link: '/sprite-slicer',
   title: 'Sprite Slicer',
   preview: '',
   description: 'Small application to slice and visualize sprites from spritesheet'
@@ -41,6 +43,17 @@ const Container = styled.div`
   max-height: 400px;
   max-width: 800px;
   overflow: auto;
+
+  ${media.greaterThan('xl')`
+    max-height: 600px;
+    max-width: 900px;
+  `}
+
+  ${media.lessThan('m')`
+    width: 100%;
+    height: 90%;
+    overflow: initial;
+  `}
 `
 const StyledFrame = styled(Frame)`
   padding: 8px;
@@ -55,6 +68,11 @@ const Inline = styled.div`
 const SpaceBetween = styled(Inline)`
   gap: 16px;
   justify-content: space-between;
+`
+const ContentContainer = styled(SpaceBetween)`
+  ${media.lessThan('m')`
+    flex-direction: column;
+  `}
 `
 const Title = styled.span`
   font-weight: 600;
@@ -75,6 +93,14 @@ const BottomButton = styled.div`
 `
 const Description = styled.span`
   font-size: 20px;
+  ${media.lessThan('m')`
+    font-size: 16px;
+    padding: 0 24px;
+  `}
+
+  ${media.lessThan('s')`
+    padding: 0 8px;
+  `}
 `
 
 const Projects = () => {
@@ -92,7 +118,7 @@ const Projects = () => {
               {map(tags, tag => <Tag key={tag}>{tag}</Tag>)}
             </Inline>
             <StyledFrame>
-              <SpaceBetween>
+              <ContentContainer>
                 <Preview
                   src={preview}
                   alt={description}
@@ -110,7 +136,7 @@ const Projects = () => {
                       <Button>Voir</Button>
                     </Link>}
                 </BottomButton>
-              </SpaceBetween>
+              </ContentContainer>
             </StyledFrame>
           </StyledFrame>
         )
