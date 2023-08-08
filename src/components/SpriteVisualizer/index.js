@@ -1,8 +1,11 @@
 import styled from 'styled-components'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { get, map, isEqual } from 'lodash'
-import { useState, useEffect, useCallback } from 'react'
+import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { useRef, useState, useEffect, useCallback } from 'react'
+
 
 const Container = styled.div`
   display: flex;
@@ -55,15 +58,64 @@ const CanvasWrapper = styled.div`
   overflow: auto;
 `
 
+const Tile = ({ sprite, index, moveTile, width, height, file }) => {
+  const ref = useRef(null)
+  
+  const [, drop] = useDrop({
+    accept: 'TILE',
+    hover: (item) => {
+      if (item.index !== index) {
+        moveTile(item.index, index)
+        item.index = index
+      }
+    },
+  })
+
+  const [, drag] = useDrag({
+    type: 'TILE',
+    item: { index },
+  })
+  
+  drag(drop(ref))
+  
+  useEffect(() => {
+    const canvas = ref.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    ctx.clearRect(0, 0, width, height)
+
+    const img = new Image()
+    img.onload = () => {
+      ctx.drawImage(
+        img,
+        sprite.spriteX * width, sprite.spriteY * height,
+        width, height,
+        0, 0,
+        width, height
+      )
+    }
+    img.src = file
+  }, [sprite, file, width, height])
+
+  return (
+    <canvas
+      ref={ref}
+      width={width}
+      height={height}
+    />
+  )
+}
+
 const SpriteVisualizer = ({ sprites: infos }) => {
   const [isPlaying, updateIsPlaying] = useState(false)
   const [speed, updateSpeed] = useState(150)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [sprites, updatedSprites] = useState(get(infos, 'selectedSprites', []))
 
   const file = get(infos, 'file')
   const width = get(infos, 'width')
   const height = get(infos, 'height')
-  const sprites = get(infos, 'selectedSprites', [])
 
   const handlePlayPauseClick = () => {
     updateIsPlaying(!isPlaying)
@@ -74,6 +126,14 @@ const SpriteVisualizer = ({ sprites: infos }) => {
 
   const handleClickSpeedChange = useCallback((func, val, op) =>
     isEqual(op, '+') ? func(val + 1) : func(val - 1), [])
+
+  const moveTile = useCallback((fromIndex, toIndex) => {
+    const sortedSprites = [...sprites]
+    const [movedItem] = sortedSprites.splice(fromIndex, 1)
+    sortedSprites.splice(toIndex, 0, movedItem)
+    console.log(sortedSprites)
+    updatedSprites(sortedSprites)
+  }, [sprites, updatedSprites])
 
   useEffect(() => {
     let interval
@@ -93,12 +153,40 @@ const SpriteVisualizer = ({ sprites: infos }) => {
 
 
   return (
-    <Container>
-      <Tiles>
-        {map(sprites, (sprite, index) => {
-          return (
+    <DndProvider backend={HTML5Backend}>
+      <Container>
+        <Tiles>
+          {map(sprites, (sprite, index) => {
+            return (
+              <Tile
+                key={index}
+                sprite={sprite}
+                index={index}
+                moveTile={moveTile}
+                width={width}
+                height={height}
+                file={file}
+              />)
+          })}
+        </Tiles>
+        <Button onClick={handlePlayPauseClick}>
+          {isPlaying ? "Pause" : "Play"}
+        </Button>
+        <Visualizer>
+          <Settings>
+            <Inline>
+              <Count>x : {speed}</Count>
+              <Slider type="range" min="50" max="300" value={speed} onChange={handleSpeedChange} />
+              <SettingsButton width={20} height={20} onClick={() => handleClickSpeedChange(updateSpeed, speed, '+')}>
+                <FontAwesomeIcon icon={faPlus} />
+              </SettingsButton>
+              <SettingsButton width={20} height={20} onClick={() => handleClickSpeedChange(updateSpeed, speed, '-')}>
+                <FontAwesomeIcon icon={faMinus} />
+              </SettingsButton>
+            </Inline>
+          </Settings>
+          <CanvasWrapper>
             <canvas
-              key={index}
               width={width}
               height={height}
               ref={canvasRef => {
@@ -108,7 +196,7 @@ const SpriteVisualizer = ({ sprites: infos }) => {
                   img.onload = () => {
                     ctx.drawImage(
                       img,
-                      sprite.spriteX * width, sprite.spriteY * height,
+                      sprites[currentIndex].spriteX * width, sprites[currentIndex].spriteY * height,
                       width, height,
                       0, 0,
                       width, height
@@ -118,49 +206,10 @@ const SpriteVisualizer = ({ sprites: infos }) => {
                 }
               }}
             />
-          )
-        })}
-      </Tiles>
-      <Button onClick={handlePlayPauseClick}>
-        {isPlaying ? "Pause" : "Play"}
-      </Button>
-      <Visualizer>
-        <Settings>
-          <Inline>
-            <Count>x : {speed}</Count>
-            <Slider type="range" min="50" max="300" value={speed} onChange={handleSpeedChange} />
-            <SettingsButton width={20} height={20} onClick={() => handleClickSpeedChange(updateSpeed, speed, '+')}>
-              <FontAwesomeIcon icon={faPlus} />
-            </SettingsButton>
-            <SettingsButton width={20} height={20} onClick={() => handleClickSpeedChange(updateSpeed, speed, '-')}>
-              <FontAwesomeIcon icon={faMinus} />
-            </SettingsButton>
-          </Inline>
-        </Settings>
-        <CanvasWrapper>
-          <canvas
-            width={width}
-            height={height}
-            ref={canvasRef => {
-              if (canvasRef != null) {
-                const ctx = canvasRef.getContext('2d')
-                const img = new Image()
-                img.onload = () => {
-                  ctx.drawImage(
-                    img,
-                    sprites[currentIndex].spriteX * width, sprites[currentIndex].spriteY * height,
-                    width, height,
-                    0, 0,
-                    width, height
-                  )
-                }
-                img.src = file
-              }
-            }}
-          />
-        </CanvasWrapper>
-      </Visualizer>
-    </Container >
+          </CanvasWrapper>
+        </Visualizer>
+      </Container >
+    </DndProvider>
   )
 }
 

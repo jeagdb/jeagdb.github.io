@@ -1,10 +1,11 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { map, isEqual, isUndefined } from 'lodash'
 import styled, { createGlobalStyle, keyframes } from 'styled-components'
+import { map, filter, isEqual, isUndefined, includes } from 'lodash'
 import { AppBar, Toolbar, Button, Frame, MenuList, MenuListItem, Separator } from 'react95'
 
 import media from '@/services/media'
+import Window95 from '../Window'
 import { BOTTOM_BAR_LINKS } from '../../config/links'
 
 const StartButton = styled(Button)`
@@ -98,6 +99,14 @@ const VideoText = styled.p`
     font-size: 42px;
   `} 
 `
+const Applications = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`
+const StyledWindow95 = styled(Window95)`
+
+`
 
 const formatTime = (time) => time < 10 ? `0${time}` : time
 
@@ -106,15 +115,24 @@ const getVideoName = (date) => {
   return isHalloween ? 'creepycomputer' : 'computer1'
 }
 
-const BottomBar = () => {
+const BottomBar = ({ windows, updateWindows }) => {
   const [now, updateNow] = useState(new Date())
   const [open, updateOpen] = useState(false)
   const [shutdown, updateShutdown] = useState(false)
   const [bootVideo, updateBootVideo] = useState(false)
-
+  const [applications, updateApplications] = useState(windows)
   const audioRef = useRef()
 
   const handleOpen = useCallback(() => updateOpen(!open), [open])
+  const handleOpenApplication = useCallback((application) => {
+    console.log('?')
+    const res = includes(applications, application)
+      ? filter(applications, app => !isEqual(app, application))
+      : [...applications, application]
+
+    console.log(res)
+    updateApplications(res)
+  }, [applications, updateApplications])
 
   const handleShutDown = useCallback(() => {
     if (audioRef.current) {
@@ -131,6 +149,12 @@ const BottomBar = () => {
     updateBootVideo(false)
     updateShutdown(false)
   }, [updateBootVideo])
+
+  const handleCloseWindow = useCallback((title) => {
+    updateWindows(prevWindows => {
+      return filter(prevWindows, prevWindow => !isEqual(title, prevWindow))
+    })
+  }, [updateWindows])
 
   useEffect(() => {
     if (audioRef.current) {
@@ -153,53 +177,64 @@ const BottomBar = () => {
       {shutdown && <ShutdownOverlay />}
       {bootVideo && <VideoContainer>
         <VideoComponent onClick={handleVideoClick} src={`/videos/${getVideoName(now)}.mp4`} autoPlay loop muted />
-        <VideoText>Press anywere !</VideoText>
+        <VideoText>Click anywhere !</VideoText>
       </VideoContainer>}
       <Bar>
         <BarElements>
-          <StartButton
-            active={open}
-            onClick={handleOpen}>
-            <Image
-              src='/images/windows.png'
-              alt='w95 logo'
-              width={24}
-              height={24} />
-            <div>Start</div>
-          </StartButton>
-          {open &&
-            <Menu>{map(BOTTOM_BAR_LINKS, ({ icon, link, text, divider, width = 32, height = 32 }) => {
-              if (isUndefined(link)) {
+          <Applications>
+            <StartButton
+              active={open}
+              onClick={handleOpen}>
+              <Image
+                src='/images/windows.png'
+                alt='w95 logo'
+                width={24}
+                height={24} />
+              <div>Start</div>
+            </StartButton>
+            {open &&
+              <Menu>{map(BOTTOM_BAR_LINKS, ({ icon, link, text, divider, width = 32, height = 32 }) => {
+                if (isUndefined(link)) {
+                  return (
+                    <>
+                      {isEqual(divider, true) && <Separator />}
+                      <MenuItem onClick={handleShutDown}>
+                        <Image
+                          src={icon}
+                          alt={text}
+                          width={width}
+                          height={height} />
+                        <MenuText>{text}</MenuText>
+                        <audio ref={audioRef} src="/mp3/shutdown.mp3" />
+                      </MenuItem>
+                    </>)
+                }
+
                 return (
-                  <>
+                  <a href={link} target='_blank' rel="noreferrer">
                     {isEqual(divider, true) && <Separator />}
-                    <MenuItem onClick={handleShutDown}>
+                    <MenuItem>
                       <Image
                         src={icon}
                         alt={text}
                         width={width}
                         height={height} />
                       <MenuText>{text}</MenuText>
-                      <audio ref={audioRef} src="/mp3/shutdown.mp3" />
                     </MenuItem>
-                  </>)
-              }
-
+                  </a>
+                )
+              })}
+              </Menu>}
+            {map(windows, window => {
               return (
-                <a href={link} target='_blank' rel="noreferrer">
-                  {isEqual(divider, true) && <Separator />}
-                  <MenuItem>
-                    <Image
-                      src={icon}
-                      alt={text}
-                      width={width}
-                      height={height} />
-                    <MenuText>{text}</MenuText>
-                  </MenuItem>
-                </a>
+                <Button
+                  active={includes(applications, window)}
+                  onClick={() => handleOpenApplication(window)}>
+                  {window}
+                </Button>
               )
             })}
-            </Menu>}
+          </Applications>
           <Clock variant='well'>
             {formatTime(now.getHours())}:{formatTime(now.getMinutes())}
           </Clock>

@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import styled, { css, keyframes } from "styled-components"
+import styled, { keyframes } from "styled-components"
 import original from 'react95/dist/themes/original'
 import { ThemeProvider } from 'styled-components'
-import { get, map, first } from 'lodash'
+import { useState, useCallback } from 'react'
+import { get, map, first, filter, isEqual, uniq, isUndefined } from 'lodash'
 
+import Window95 from '../Window'
 import Shortcut from '../Shortcut'
 import BottomBar from '../BottomBar'
 import GlobalStyles from '../GlobalStyles'
@@ -40,6 +42,18 @@ const Columns = styled.div`
 `
 
 const Home = () => {
+  const [windows, updateWindows] = useState([])
+
+  const handleClick = useCallback((text) => {
+    updateWindows(prevWindows => uniq([...prevWindows, text]))
+  }, [updateWindows])
+
+  const handleCloseWindow = useCallback((title) => {
+    updateWindows(prevWindows => {
+      return filter(prevWindows, prevWindow => !isEqual(title, prevWindow))
+    })
+  }, [updateWindows])
+
   return (
     <ThemeProvider theme={original}>
       <GlobalStyles />
@@ -50,10 +64,10 @@ const Home = () => {
       <Shortcuts>
         {map(SHORTCUT_LINKS, col => (
           <Columns key={get(first(col), 'link', '')}>
-            {map(col, ({ icon, link, text }) => (
-              <div key={link}>
-                <Link href={link}>
-                  <Shortcut>
+            {map(col, ({ icon, link, text }) => {
+              if (isUndefined(link)) {
+                return (
+                  <Shortcut onClick={() => handleClick(text)}>
                     <Image
                       src={icon}
                       alt={text}
@@ -61,11 +75,35 @@ const Home = () => {
                       height={32} />
                     <div>{text}</div>
                   </Shortcut>
-                </Link>
-              </div>))}
+                )
+              }
+
+              return (
+                <div key={link}>
+                  <Link href={link}>
+                    <Shortcut>
+                      <Image
+                        src={icon}
+                        alt={text}
+                        width={32}
+                        height={32} />
+                      <div>{text}</div>
+                    </Shortcut>
+                  </Link>
+                </div>)
+            })}
           </Columns>))}
       </Shortcuts>
-      <BottomBar />
+      {map(windows, window =>
+        <Window95
+          key={window}
+          title={window}
+          onClose={handleCloseWindow}>
+          <div>hello</div>
+        </Window95>)}
+      <BottomBar
+        windows={windows}
+        updateWindows={updateWindows} />
     </ThemeProvider>
   )
 }

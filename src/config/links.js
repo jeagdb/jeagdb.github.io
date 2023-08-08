@@ -8,8 +8,7 @@ export const SHORTCUT_LINKS = [[{
   text: 'cv.txt'
 }, {
   icon: '/images/games.png',
-  link: '/game',
-  text: 'games'
+  text: 'projects'
 }], [
 ]]
 

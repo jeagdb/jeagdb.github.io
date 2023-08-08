@@ -6,6 +6,7 @@ const Shortcut = styled.div`
   gap: 10px;
   font-size: 14px;
   align-items: center;
+  cursor: pointer;
 
   text-decoration: none;
   color: black;
