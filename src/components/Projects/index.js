@@ -18,7 +18,7 @@ const PROJECTS = [{
   tags: ['javascript', 'next'],
   link: '/sprite-slicer',
   title: 'Sprite Slicer',
-  preview: '',
+  preview: 'images/spritesheet-default.png',
   description: 'Small application to slice and visualize sprites from spritesheet'
 }, {
   date: '2023',

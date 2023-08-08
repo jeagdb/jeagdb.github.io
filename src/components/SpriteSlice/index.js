@@ -4,8 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { get, size, isEqual, isUndefined, some, filter, isEmpty } from 'lodash'
 
+import media from '@/services/media'
+
 const Container = styled.div`
   width: 100%;
+  height: 90%;
 `
 const FileWrapper = styled.div`
   border: 1px solid white;
@@ -32,10 +35,16 @@ const Settings = styled.div`
   display: flex;
   gap: 16px;
   margin: 16px 0;
+  ${media.lessThan('m')`
+    flex-direction: column;
+  `}
 `
 const SpriteSettings = styled.div`
   display: flex;
   gap: 8px;
+  ${media.lessThan('m')`
+    flex-direction: column;
+  `}
 `
 const Inline = styled.div`
   display: flex;
@@ -66,13 +75,15 @@ const CanvasWrapper = styled.div`
   max-width: 70%;
   height: 80%;
   overflow: auto;
+
+  ${media.lessThan('m')`
+    max-width: 100%;
+    height: 70%;
+  `}
 `
 
-const SpriteSlice = ({ sprites, updateSprites }) => {
-  const [width, setWidth] = useState(80)
-  const [height, setHeight] = useState(80)
-  const [file, updateFile] = useState(get(sprites, 'file'))
-  const [selected, updateSelected] = useState(false)
+const SpriteSlice = ({ width, height, sprites, updateWidth, updateHeight, updateSprites }) => {
+  const [file, updateFile] = useState(get(sprites, 'file', 'images/spritesheet.png'))
   const [selectedSprites, updateSelectedSprites] = useState(get(sprites, 'selectedSprites', []))
 
   const canvasRef = useRef()
@@ -90,16 +101,16 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
   }, [])
 
   const handleWidthChange = useCallback((e) =>
-    setWidth(parseInt(get(e, 'target.value', width))), [width, setWidth])
+    updateWidth(parseInt(get(e, 'target.value', width))), [width, updateWidth])
 
   const handleHeightChange = useCallback((e) =>
-    setHeight(parseInt(get(e, 'target.value', height))), [height, setHeight])
+    updateHeight(parseInt(get(e, 'target.value', height))), [height, updateHeight])
 
   const handleSizeChange = useCallback((func, val, op) =>
     isEqual(op, '+') ? func(val + 1) : func(val - 1), [])
 
   const handleCanvasClick = useCallback((e) => {
-    if (selected && contextRef.current) {
+    if (contextRef.current) {
       const rect = canvasRef.current.getBoundingClientRect()
       const scaleX = canvasRef.current.width / rect.width
       const scaleY = canvasRef.current.height / rect.height
@@ -115,14 +126,14 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
 
       updateSelectedSprites((currSprites) => {
         return isPresent ?
-          filter(currSprites, sprite => !isEqual(sprite.spriteX, spriteX) || !isEqual(sprite.spriteY,spriteY))
+          filter(currSprites, sprite => !isEqual(sprite.spriteX, spriteX) || !isEqual(sprite.spriteY, spriteY))
           : [...currSprites, newSprite]
       })
     }
-  }, [selected, selectedSprites, width, height, updateSelectedSprites])
+  }, [width, height, selectedSprites, updateSelectedSprites])
 
   const drawSelection = useCallback(() => {
-    if (selected && contextRef.current && !isEmpty(selectedSprites)) {
+    if (contextRef.current && !isEmpty(selectedSprites)) {
       const context = contextRef.current
       context.lineWidth = 2
       context.strokeStyle = 'blue'
@@ -132,7 +143,7 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
         context.strokeRect(spriteX * width, spriteY * height, width, height)
       }
     }
-  }, [selected, width, height, selectedSprites])
+  }, [width, height, selectedSprites])
 
 
   useEffect(() => {
@@ -191,25 +202,25 @@ const SpriteSlice = ({ sprites, updateSprites }) => {
             <Inline>
               <Count>x : {width}</Count>
               <Slider type="range" min="1" max="200" value={width} onChange={handleWidthChange} />
-              <Button width={20} height={20} onClick={() => handleSizeChange(setWidth, width, '+')}>
+              <Button width={20} height={20} onClick={() => handleSizeChange(updateWidth, width, '+')}>
                 <FontAwesomeIcon icon={faPlus} />
               </Button>
-              <Button width={20} height={20} onClick={() => handleSizeChange(setWidth, width, '-')}>
+              <Button width={20} height={20} onClick={() => handleSizeChange(updateWidth, width, '-')}>
                 <FontAwesomeIcon icon={faMinus} />
               </Button>
             </Inline>
             <Inline>
               <Count>y : {height}</Count>
               <Slider type="range" min="1" max="200" value={height} onChange={handleHeightChange} />
-              <Button width={20} height={20} onClick={() => handleSizeChange(setHeight, height, '+')}>
+              <Button width={20} height={20} onClick={() => handleSizeChange(updateHeight, height, '+')}>
                 <FontAwesomeIcon icon={faPlus} />
               </Button>
-              <Button width={20} height={20} onClick={() => handleSizeChange(setHeight, height, '-')}>
+              <Button width={20} height={20} onClick={() => handleSizeChange(updateHeight, height, '-')}>
                 <FontAwesomeIcon icon={faMinus} />
               </Button>
             </Inline>
           </Block>
-          <FileWrapper selected={selected} onClick={() => updateSelected(!selected)}>selectionner une série de sprites {selected ? `(${size(selectedSprites)})` : ''}</FileWrapper>
+          <span>Sprites sélectionnés: {size(selectedSprites)}</span>
         </SpriteSettings>}
       </Settings>
       <CanvasWrapper>

@@ -1,17 +1,19 @@
+/* eslint-disable react/no-unescaped-entities */
 import styled from 'styled-components'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { get, map, isEqual } from 'lodash'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { get, map, isEqual, isEmpty, isUndefined } from 'lodash'
 import { useRef, useState, useEffect, useCallback } from 'react'
 
+import media from '@/services/media'
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 24px; 
+  margin-top: 24px;
 `
 const Tiles = styled.div`
   display: flex;
@@ -54,13 +56,19 @@ const SettingsButton = styled.div`
   cursor: pointer;
 `
 const CanvasWrapper = styled.div`
-  height: 80%;
   overflow: auto;
+`
+const Test = styled.canvas`
+  width: 200px;
+
+  ${media.lessThan('m')`
+    width: 100%;
+  `}
 `
 
 const Tile = ({ sprite, index, moveTile, width, height, file }) => {
   const ref = useRef(null)
-  
+
   const [, drop] = useDrop({
     accept: 'TILE',
     hover: (item) => {
@@ -75,9 +83,9 @@ const Tile = ({ sprite, index, moveTile, width, height, file }) => {
     type: 'TILE',
     item: { index },
   })
-  
+
   drag(drop(ref))
-  
+
   useEffect(() => {
     const canvas = ref.current
     if (!canvas) return
@@ -108,9 +116,9 @@ const Tile = ({ sprite, index, moveTile, width, height, file }) => {
 }
 
 const SpriteVisualizer = ({ sprites: infos }) => {
-  const [isPlaying, updateIsPlaying] = useState(false)
   const [speed, updateSpeed] = useState(150)
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isPlaying, updateIsPlaying] = useState(false)
+  const [currentIndex, updateCurrentIndex] = useState(0)
   const [sprites, updatedSprites] = useState(get(infos, 'selectedSprites', []))
 
   const file = get(infos, 'file')
@@ -131,7 +139,6 @@ const SpriteVisualizer = ({ sprites: infos }) => {
     const sortedSprites = [...sprites]
     const [movedItem] = sortedSprites.splice(fromIndex, 1)
     sortedSprites.splice(toIndex, 0, movedItem)
-    console.log(sortedSprites)
     updatedSprites(sortedSprites)
   }, [sprites, updatedSprites])
 
@@ -140,7 +147,7 @@ const SpriteVisualizer = ({ sprites: infos }) => {
 
     if (isPlaying && sprites.length > 0) {
       interval = setInterval(() => {
-        setCurrentIndex(prevIndex => (prevIndex + 1) % sprites.length)
+        updateCurrentIndex(prevIndex => (prevIndex + 1) % sprites.length)
       }, speed)
     }
 
@@ -151,6 +158,25 @@ const SpriteVisualizer = ({ sprites: infos }) => {
     }
   }, [speed, isPlaying, sprites])
 
+  useEffect(() => {
+    updatedSprites(get(infos, 'selectedSprites', []))
+  }, [infos])
+
+  if (isUndefined(file)) {
+    return (
+      <Container>
+        <span>Veuillez charger une spritesheet dans l'onglet "Sélection"</span>
+      </Container>
+    )
+  }
+
+  if (isEmpty(sprites)) {
+    return (
+      <Container>
+        <span>Veuillez sélectionner des sprites dans l'onglet "Sélection"</span>
+      </Container>
+    )
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -170,13 +196,13 @@ const SpriteVisualizer = ({ sprites: infos }) => {
           })}
         </Tiles>
         <Button onClick={handlePlayPauseClick}>
-          {isPlaying ? "Pause" : "Play"}
+          {isPlaying ? 'Pause' : 'Play'}
         </Button>
         <Visualizer>
           <Settings>
             <Inline>
-              <Count>x : {speed}</Count>
-              <Slider type="range" min="50" max="300" value={speed} onChange={handleSpeedChange} />
+              <Count>{speed} ms/image</Count>
+              <Slider type='range' min='50' max='300' value={speed} onChange={handleSpeedChange} />
               <SettingsButton width={20} height={20} onClick={() => handleClickSpeedChange(updateSpeed, speed, '+')}>
                 <FontAwesomeIcon icon={faPlus} />
               </SettingsButton>
@@ -186,7 +212,7 @@ const SpriteVisualizer = ({ sprites: infos }) => {
             </Inline>
           </Settings>
           <CanvasWrapper>
-            <canvas
+            <Test
               width={width}
               height={height}
               ref={canvasRef => {

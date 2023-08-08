@@ -1,13 +1,11 @@
 import React, { useState, useCallback } from 'react'
-import Link from 'next/link'
 import styled from 'styled-components'
-import { faHouse } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { filter, includes } from 'lodash'
 
 import File from '../File'
 import media from '@/services/media'
 import Folder from '../Folder'
+import HomeButton from '../HomeButton'
 
 const Container = styled.div`
   ${media.lessThan('m')`
@@ -22,15 +20,6 @@ const Arborescence = styled.div`
   padding: 16px;
   min-width: 300px;
   max-height: 500px;
-`
-const HomeButton = styled(FontAwesomeIcon)`
-  position: absolute;
-  top: 0;  
-  width: 32px;
-  top: 8px;
-  left: 12px;
-  padding: 4px;
-  cursor: pointer;
 `
 
 const Tree = ({ id, tree, back, updateBack }) => {
@@ -79,12 +68,7 @@ const Tree = ({ id, tree, back, updateBack }) => {
 
   return (
     <Container visible={back}>
-      <Link href='/'>
-        <HomeButton
-          icon={faHouse}
-          color='white'
-          fontSize={10} />
-      </Link>
+      <HomeButton />
       <Arborescence>
         {Object.keys(tree).map((elt) => renderTree(tree[elt], elt))}
       </Arborescence>
