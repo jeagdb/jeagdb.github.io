@@ -4,13 +4,13 @@ import { get, map } from 'lodash'
 import { Button, Frame, Separator, Avatar } from 'react95'
 
 const PROJECTS = [{
-  date: '2023',
+  date: '2022-2023',
   tags: ['javascript', 'next'],
   link: 'https://github.com/jeagdb/jeagdb.github.io',
   title: 'Portfolio',
-  preview: '',
+  preview: 'images/portfolio.png',
   external: true,
-  description: 'Website serving as a portfolio, featuring links to GitHub, LinkedIn, CV, and various small projects.'
+  description: 'Website serving as a portfolio, built with Next.js and hosted on GitHub Pages, featuring links to GitHub, LinkedIn, CV, and various small projects.'
 }, {
   date: '2023',
   tags: ['javascript', 'next'],
@@ -23,6 +23,7 @@ const PROJECTS = [{
   tags: ['ansible', 'docker'],
   link: 'https://github.com/jeagdb/homeserver',
   title: 'Home Server',
+  preview: 'images/home-server.jpg',
   external: true,
   description: 'Home server setup using Ansible with each service running in a Docker container in order to ensures streamlined deployment, easy scalability, and isolated environments for each service.'
 }, {
@@ -30,6 +31,7 @@ const PROJECTS = [{
   tags: ['javascript', 'node', 'pug'],
   link: 'https://github.com/jeagdb/spotifyrics',
   title: 'Spotifyrics',
+  preview: '/images/spotifyrics.png',
   external: true,
   description: 'Server-rendered application using Pug to generate views, interfacing Spotify\'s API to fetch user playlists and provides song lyrics from Genius'
 }]
@@ -95,6 +97,7 @@ const Projects = () => {
                   src={preview}
                   alt={description}
                   size={300}
+                  style={{ objectFit: 'cover'}}
                   square={true} />
                 <Description>{description}</Description>
                 <BottomButton>
