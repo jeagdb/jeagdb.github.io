@@ -17,8 +17,8 @@ const StyledWindowHeader = styled(WindowHeader)`
 `
 
 const Window95 = ({ title, onClose, children, ...props }) => {
-  const top = random(10, 40)
-  const left = random(30, 60)
+  const top = 10
+  const left = 40
 
   return (
     <StyledWindow top={top} left={left} {...props}>

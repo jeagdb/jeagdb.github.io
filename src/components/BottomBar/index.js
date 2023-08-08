@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import styled, { createGlobalStyle, keyframes } from 'styled-components'
-import { map, filter, isEqual, isUndefined, includes } from 'lodash'
+import { get, map, filter, isEqual, isUndefined, includes } from 'lodash'
 import { AppBar, Toolbar, Button, Frame, MenuList, MenuListItem, Separator } from 'react95'
 
 import media from '@/services/media'
@@ -120,19 +120,16 @@ const BottomBar = ({ windows, updateWindows }) => {
   const [open, updateOpen] = useState(false)
   const [shutdown, updateShutdown] = useState(false)
   const [bootVideo, updateBootVideo] = useState(false)
-  const [applications, updateApplications] = useState(windows)
   const audioRef = useRef()
 
   const handleOpen = useCallback(() => updateOpen(!open), [open])
-  const handleOpenApplication = useCallback((application) => {
-    console.log('?')
-    const res = includes(applications, application)
-      ? filter(applications, app => !isEqual(app, application))
-      : [...applications, application]
-
-    console.log(res)
-    updateApplications(res)
-  }, [applications, updateApplications])
+  const handleClickTab = useCallback((title, visible ) => {
+    const apps = filter(windows, app => !isEqual(get(app, 'title'), title))
+    updateWindows([...apps, {
+      title,
+      visible: !visible
+    }])
+  }, [windows, updateWindows])
 
   const handleShutDown = useCallback(() => {
     if (audioRef.current) {
@@ -149,12 +146,6 @@ const BottomBar = ({ windows, updateWindows }) => {
     updateBootVideo(false)
     updateShutdown(false)
   }, [updateBootVideo])
-
-  const handleCloseWindow = useCallback((title) => {
-    updateWindows(prevWindows => {
-      return filter(prevWindows, prevWindow => !isEqual(title, prevWindow))
-    })
-  }, [updateWindows])
 
   useEffect(() => {
     if (audioRef.current) {
@@ -225,12 +216,12 @@ const BottomBar = ({ windows, updateWindows }) => {
                 )
               })}
               </Menu>}
-            {map(windows, window => {
+            {map(windows, ({ title, visible }) => {
               return (
                 <Button
-                  active={includes(applications, window)}
-                  onClick={() => handleOpenApplication(window)}>
-                  {window}
+                  active={visible}
+                  onClick={() => handleClickTab(title, visible)}>
+                  {title}
                 </Button>
               )
             })}

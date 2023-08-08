@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components"
 import original from 'react95/dist/themes/original'
 import { ThemeProvider } from 'styled-components'
 import { useState, useCallback } from 'react'
-import { get, map, first, filter, isEqual, uniq, isUndefined } from 'lodash'
+import { get, map, first, filter, isEqual, some, isUndefined } from 'lodash'
 
 import Window95 from '../Window'
 import Shortcut from '../Shortcut'
@@ -44,13 +44,18 @@ const Columns = styled.div`
 const Home = () => {
   const [windows, updateWindows] = useState([])
 
-  const handleClick = useCallback((text) => {
-    updateWindows(prevWindows => uniq([...prevWindows, text]))
-  }, [updateWindows])
+  const handleClick = useCallback((title) => {
+    if (!some(windows, window => isEqual(get(window, 'title'), title))) {
+      updateWindows([...windows, {
+        title,
+        visible: true
+      }])
+    }
+  }, [windows, updateWindows])
 
   const handleCloseWindow = useCallback((title) => {
     updateWindows(prevWindows => {
-      return filter(prevWindows, prevWindow => !isEqual(title, prevWindow))
+      return filter(prevWindows, prevWindow => !isEqual(title, get(prevWindow, 'title')))
     })
   }, [updateWindows])
 
@@ -94,13 +99,18 @@ const Home = () => {
             })}
           </Columns>))}
       </Shortcuts>
-      {map(windows, window =>
-        <Window95
-          key={window}
-          title={window}
-          onClose={handleCloseWindow}>
-          <div>hello</div>
-        </Window95>)}
+      {map(windows, ({ title, visible }) => {
+        if (visible) {
+          return (
+            <Window95
+              key={title}
+              title={title}
+              onClose={handleCloseWindow}>
+              <div>hello</div>
+            </Window95>
+          )
+        }
+      })}
       <BottomBar
         windows={windows}
         updateWindows={updateWindows} />
