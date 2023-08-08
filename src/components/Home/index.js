@@ -44,11 +44,12 @@ const Columns = styled.div`
 const Home = () => {
   const [windows, updateWindows] = useState([])
 
-  const handleClick = useCallback((title) => {
+  const handleClick = useCallback((title, component) => {
     if (!some(windows, window => isEqual(get(window, 'title'), title))) {
       updateWindows([...windows, {
         title,
-        visible: true
+        visible: true,
+        Component: component
       }])
     }
   }, [windows, updateWindows])
@@ -69,10 +70,10 @@ const Home = () => {
       <Shortcuts>
         {map(SHORTCUT_LINKS, col => (
           <Columns key={get(first(col), 'link', '')}>
-            {map(col, ({ icon, link, text }) => {
+            {map(col, ({ icon, link, text, component }) => {
               if (isUndefined(link)) {
                 return (
-                  <Shortcut onClick={() => handleClick(text)}>
+                  <Shortcut onClick={() => handleClick(text, component)}>
                     <Image
                       src={icon}
                       alt={text}
@@ -99,14 +100,14 @@ const Home = () => {
             })}
           </Columns>))}
       </Shortcuts>
-      {map(windows, ({ title, visible }) => {
+      {map(windows, ({ title, visible, Component }) => {
         if (visible) {
           return (
             <Window95
               key={title}
               title={title}
               onClose={handleCloseWindow}>
-              <div>hello</div>
+              <Component />
             </Window95>
           )
         }

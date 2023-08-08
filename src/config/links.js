@@ -1,3 +1,5 @@
+import Projects from '@/components/Projects'
+
 export const SHORTCUT_LINKS = [[{
   icon: '/images/glossary.png',
   link: '/content/projets-jeagdb',
@@ -8,7 +10,8 @@ export const SHORTCUT_LINKS = [[{
   text: 'cv.txt'
 }, {
   icon: '/images/games.png',
-  text: 'projects'
+  text: 'projects',
+  component: Projects
 }], [
 ]]
 

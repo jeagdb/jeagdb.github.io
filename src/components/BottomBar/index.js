@@ -123,11 +123,11 @@ const BottomBar = ({ windows, updateWindows }) => {
   const audioRef = useRef()
 
   const handleOpen = useCallback(() => updateOpen(!open), [open])
-  const handleClickTab = useCallback((title, visible ) => {
-    const apps = filter(windows, app => !isEqual(get(app, 'title'), title))
+  const handleClickTab = useCallback((window) => {
+    const apps = filter(windows, app => !isEqual(get(app, 'title'), get(window, 'title')))
     updateWindows([...apps, {
-      title,
-      visible: !visible
+      ...window,
+      visible: !get(window, 'visible')
     }])
   }, [windows, updateWindows])
 
@@ -216,12 +216,12 @@ const BottomBar = ({ windows, updateWindows }) => {
                 )
               })}
               </Menu>}
-            {map(windows, ({ title, visible }) => {
+            {map(windows, window => {
               return (
                 <Button
-                  active={visible}
-                  onClick={() => handleClickTab(title, visible)}>
-                  {title}
+                  active={get(window, 'visible')}
+                  onClick={() => handleClickTab(window)}>
+                  {get(window, 'title')}
                 </Button>
               )
             })}
