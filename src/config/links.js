@@ -5,10 +5,6 @@ export const SHORTCUT_LINKS = [[{
   link: '/content/projets-jeagdb',
   text: 'glossary'
 }, {
-  icon: '/images/cv.png',
-  link: 'a',
-  text: 'cv.txt'
-}, {
   icon: '/images/projects.png',
   text: 'projects',
   component: Projects
