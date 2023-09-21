@@ -8,8 +8,12 @@ export const SHORTCUT_LINKS = [[{
   icon: '/images/projects.png',
   text: 'projects',
   component: Projects
-}], [
-]]
+}], [{
+  icon: '/images/shrek.png',
+  text: 'sprites slicer',
+  link: '/sprite-slicer',
+}]
+]
 
 export const BOTTOM_BAR_LINKS = [{
   icon: '/images/linkedin.png',

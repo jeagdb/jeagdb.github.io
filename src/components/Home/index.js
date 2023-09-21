@@ -69,8 +69,9 @@ const Home = () => {
         fill={true} />
       <Shortcuts>
         {map(SHORTCUT_LINKS, col => (
-          <Columns key={get(first(col), 'link', '')}>
+          <Columns key={get(first(col), 'icon', '')}>
             {map(col, ({ icon, link, text, component }) => {
+              console.log('icon ', icon)
               if (isUndefined(link)) {
                 return (
                   <Shortcut onClick={() => handleClick(text, component)}>

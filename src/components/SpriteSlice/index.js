@@ -81,6 +81,10 @@ const CanvasWrapper = styled.div`
     height: 70%;
   `}
 `
+const SpritesheetButton = styled(FontAwesomeIcon)`
+  width: 20px;
+  height: 20px;
+`
 
 const SpriteSlice = ({ width, height, sprites, updateWidth, updateHeight, updateSprites }) => {
   const [file, updateFile] = useState(get(sprites, 'file', 'images/spritesheet.png'))
@@ -194,7 +198,7 @@ const SpriteSlice = ({ width, height, sprites, updateWidth, updateHeight, update
             onChange={handleFileChange} />
           <FileButton>
             <span>Choisir une spritesheet</span>
-            <FontAwesomeIcon icon={faPlus} size='sm' />
+            <SpritesheetButton icon={faPlus} />
           </FileButton>
         </FileWrapper>
         {!isUndefined(file) && <SpriteSettings>
