@@ -1,6 +1,10 @@
+import SocketProvider from '../config/SocketProvider'
+
 const App = ({ Component, pageProps }) => {
   return (
-    <Component {...pageProps} />
+    <SocketProvider>
+      <Component {...pageProps} />
+    </SocketProvider>
   )
 }
 
